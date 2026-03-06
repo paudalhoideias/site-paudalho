@@ -44,21 +44,28 @@ cursor:pointer;
 
 /* HERO */
 
-.hero{
-padding:80px 20px;
-text-align:center;
-background:#e8efe8;
-}
+.hero {
 
-.hero h1{
-font-size:40px;
-margin-bottom:10px;
-}
+background-image: linear-gradient(
+rgba(0,0,0,0.45),
+rgba(0,0,0,0.45)
+),
+url('../images/hero-home.webp');
 
-.hero p{
-font-size:18px;
-max-width:700px;
-margin:auto;
+background-size: cover;
+background-position: center;
+
+height: 70vh;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+text-align: center;
+color: white;
+
+padding: 40px;
+
 }
 
 /* BOTÕES */
