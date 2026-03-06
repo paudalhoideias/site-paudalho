@@ -1,1 +1,162 @@
-/* CSS do site Pau D'Alho */
+body{
+margin:0;
+font-family: Arial, Helvetica, sans-serif;
+background:#f5f5f5;
+color:#333;
+}
+
+/* HEADER */
+
+header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 25px;
+background:white;
+box-shadow:0 2px 8px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo img{
+height:40px;
+}
+
+nav{
+display:flex;
+gap:25px;
+}
+
+nav a{
+text-decoration:none;
+color:#333;
+font-weight:600;
+}
+
+.menu-icon{
+display:none;
+font-size:26px;
+cursor:pointer;
+}
+
+/* HERO */
+
+.hero{
+padding:80px 20px;
+text-align:center;
+background:#e8efe8;
+}
+
+.hero h1{
+font-size:40px;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:18px;
+max-width:600px;
+margin:auto;
+}
+
+.botao{
+display:inline-block;
+margin-top:25px;
+padding:12px 28px;
+background:#2e7d32;
+color:white;
+text-decoration:none;
+border-radius:6px;
+font-weight:600;
+}
+
+/* CATEGORIAS */
+
+.categorias{
+padding:60px 20px;
+text-align:center;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+max-width:1100px;
+margin:auto;
+}
+
+.card{
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+text-decoration:none;
+color:#333;
+transition:0.2s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+/* FOOTER */
+
+footer{
+background:#222;
+color:white;
+padding:40px 20px;
+text-align:center;
+margin-top:40px;
+}
+
+.footer-links{
+margin-bottom:10px;
+}
+
+.footer-links a{
+color:white;
+margin:0 10px;
+text-decoration:none;
+}
+
+/* WHATSAPP */
+
+.whatsapp{
+position:fixed;
+bottom:20px;
+right:20px;
+}
+
+.whatsapp img{
+width:70px;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+nav{
+display:none;
+flex-direction:column;
+position:absolute;
+right:0;
+top:70px;
+background:white;
+width:200px;
+box-shadow:0 4px 10px rgba(0,0,0,0.15);
+padding:10px;
+}
+
+nav a{
+padding:10px;
+}
+
+.menu-icon{
+display:block;
+}
+
+.hero h1{
+font-size:30px;
+}
+
+}
