@@ -53,7 +53,7 @@ rgba(0,0,0,0.45)
 url('../images/hero-home.webp');
 
 background-size: cover;
-background-position: center;
+background-position: center 30%;
 
 height: 55vh;
 
