@@ -179,6 +179,31 @@ rgba(0,0,0,0.45)
 ),
 url('../images/hero-home.webp');
 }
+/* HERO PRODUTOS */
+
+.hero-produtos {
+background-image: linear-gradient(
+rgba(0,0,0,0.45),
+rgba(0,0,0,0.45)
+),
+url('../images/hero-produtos.webp');
+}
+/* HERO LABORATORIO */
+.hero-laboratorio {
+background-image: linear-gradient(
+rgba(0,0,0,0.45),
+rgba(0,0,0,0.45)
+),
+url('../images/hero-laboratorio.webp');
+}
+/* HERO SOBRE */
+.hero-sobre {
+background-image: linear-gradient(
+rgba(0,0,0,0.45),
+rgba(0,0,0,0.45)
+),
+url('../images/hero-sobre.webp');
+}
 .hero-texto {
 
 max-width: 700px;
