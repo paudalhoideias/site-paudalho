@@ -186,6 +186,38 @@ rgba(0,0,0,0.45)
 ),
 url('../images/hero-produtos.webp');
 }
+/* HERO TORRE */
+.hero-torres {
+background-image: linear-gradient(
+rgba(0,0,0,0.45),
+rgba(0,0,0,0.45)
+),
+url('../images/hero-torres.webp');
+}
+/* HERO CLAREIRA */
+.hero-clareira {
+background-image: linear-gradient(
+rgba(0,0,0,0.45),
+rgba(0,0,0,0.45)
+),
+url('../images/hero-clareira.webp');
+}
+/* HERO CAVERNA */
+.hero-caverna {
+background-image: linear-gradient(
+rgba(0,0,0,0.45),
+rgba(0,0,0,0.45)
+),
+url('../images/hero-caverna.webp');
+}
+/* HERO TRILHA */
+.hero-trilha {
+background-image: linear-gradient(
+rgba(0,0,0,0.45),
+rgba(0,0,0,0.45)
+),
+url('../images/hero-trilha.webp');
+}
 /* HERO LABORATORIO */
 .hero-laboratorio {
 background-image: linear-gradient(
