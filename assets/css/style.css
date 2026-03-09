@@ -340,6 +340,32 @@ text-align:center;
 padding:20px;
 box-sizing:border-box;
 }
+/* novos cards adicionados */
+.card-area {
+  padding: 18px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.card-area-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 18px;
+}
+
+.card-area h3 {
+  font-size: 24px;
+  margin: 0 0 10px 0;
+}
+
+.card-area p {
+  margin: 0;
+  color: #555;
+}
+/* ^ novos cards adicionados */
 
 /* DETALHE PRODUTO */
 
