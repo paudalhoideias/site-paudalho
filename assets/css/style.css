@@ -399,6 +399,14 @@ text-align:center;
 padding:20px;
 box-sizing:border-box;
 }
+.modelo-img{
+width:100%;
+aspect-ratio:1 / 1;
+object-fit:cover;
+border-radius:12px;
+display:block;
+margin-bottom:20px;
+}
 /* novos cards adicionados */
 .card-area {
   padding: 18px;
