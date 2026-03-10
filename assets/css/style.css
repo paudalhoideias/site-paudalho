@@ -400,12 +400,13 @@ padding:20px;
 box-sizing:border-box;
 }
 .modelo-img{
-width:100%;
-aspect-ratio:1 / 1;
-object-fit:cover;
-border-radius:12px;
-display:block;
-margin-bottom:20px;
+  width: 100%;
+  max-width: 260px;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+  margin: 0 auto 18px auto;
 }
 /* novos cards adicionados */
 .card-area {
