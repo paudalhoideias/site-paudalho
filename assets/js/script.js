@@ -18,9 +18,13 @@ async function loadComponent(selector, path) {
     console.error(error);
   }
 }
-function trocarImagem(src){
-document.getElementById("imagem-principal").src = src;
+
+function trocarImagem(src) {
+  const imagemPrincipal = document.getElementById("imagem-principal");
+  if (!imagemPrincipal) return;
+  imagemPrincipal.src = src;
 }
+
 function initMobileMenu() {
   const menuToggle = document.getElementById("menu-toggle");
   const siteNav = document.getElementById("site-nav");
@@ -52,4 +56,5 @@ async function initComponents() {
 
 document.addEventListener("DOMContentLoaded", async () => {
   await initComponents();
+  initWhatsAppLinks();
 });
