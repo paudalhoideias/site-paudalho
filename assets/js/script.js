@@ -18,7 +18,9 @@ async function loadComponent(selector, path) {
     console.error(error);
   }
 }
-
+function trocarImagem(src){
+document.getElementById("imagem-principal").src = src;
+}
 function initMobileMenu() {
   const menuToggle = document.getElementById("menu-toggle");
   const siteNav = document.getElementById("site-nav");
