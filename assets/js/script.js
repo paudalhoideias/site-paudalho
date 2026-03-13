@@ -19,8 +19,8 @@ async function loadComponent(selector, path) {
   }
 }
 
-function trocarImagem(src) {
-  const imagemPrincipal = document.getElementById("imagem-principal");
+function trocarImagem(idImagemPrincipal, src) {
+  const imagemPrincipal = document.getElementById(idImagemPrincipal);
   if (!imagemPrincipal) return;
   imagemPrincipal.src = src;
 }
