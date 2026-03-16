@@ -525,21 +525,19 @@ margin-bottom:10px;
 }
 
 /* PREÇO PRODUTOS */
-.preco-produto{
-margin:20px 0;
+.produto-info .preco{
+  font-size:18px;
+  font-weight:700;
+  color:#2e7d32;
+  margin:0 0 4px 0;
+  line-height:1.2;
 }
 
-.preco{
-font-size:12px;
-font-weight:700;
-color:#2e7d32;
-margin:0 0 5px 0;
-}
-
-.preco-info{
-font-size:9px;
-color:#666;
-margin:0;
+.produto-info .preco-info{
+  font-size:13px;
+  color:#666;
+  margin:0;
+  line-height:1.4;
 }
 /* FICHA TÉCNICA */
 .ficha-tecnica{
