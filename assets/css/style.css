@@ -524,6 +524,20 @@ margin-bottom:10px;
   }
 }
 
+.ficha-tecnica{
+margin-top:30px;
+padding-top:20px;
+border-top:1px solid #e6e6e6;
+}
+
+.ficha-tecnica ul{
+padding-left:18px;
+}
+
+.ficha-tecnica li{
+margin-bottom:8px;
+}
+
 /* BLOCOS DE VARIAÇÕES */
 
 .bloco-variacoes{
