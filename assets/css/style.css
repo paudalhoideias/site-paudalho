@@ -525,10 +525,21 @@ margin-bottom:10px;
 }
 
 /* FICHA TÉCNICA */
+.ficha-tecnica{
+max-width:600px;
+margin:40px auto;
+}
+
+.ficha-tecnica h3{
+text-align:center;
+margin-bottom:20px;
+}
+
 .ficha-tecnica ul{
 list-style:none;
 padding:0;
-margin-top:15px;
+margin:0;
+font-size:15px;
 }
 
 .ficha-tecnica li{
