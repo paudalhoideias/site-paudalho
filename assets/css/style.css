@@ -546,7 +546,7 @@ margin-bottom:10px;
 
 .ficha-tecnica li{
   display:grid;
-  grid-template-columns:180px 1fr;
+  grid-template-columns:150px 1fr;
   gap:20px;
   padding:4px 0;
   border-bottom:1px solid #eeeeee;
