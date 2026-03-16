@@ -526,9 +526,11 @@ margin-bottom:10px;
 
 /* PREÇO PRODUTOS */
 .produto-info .preco{
-  font-size:17px;
-  font-weight:600;
+  font-size:18px;
+  font-weight:700;
   color:#2e7d32;
+  margin:0 0 4px 0;
+  line-height:1.2;
 }
 
 .produto-info .preco-info{
