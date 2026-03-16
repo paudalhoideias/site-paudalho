@@ -524,6 +524,23 @@ margin-bottom:10px;
   }
 }
 
+/* PREÇO PRODUTOS */
+.preco-produto{
+margin:20px 0;
+}
+
+.preco{
+font-size:22px;
+font-weight:700;
+color:#2e7d32;
+margin:0 0 5px 0;
+}
+
+.preco-info{
+font-size:13px;
+color:#666;
+margin:0;
+}
 /* FICHA TÉCNICA */
 .ficha-tecnica{
   max-width:1100px;
