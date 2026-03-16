@@ -526,32 +526,36 @@ margin-bottom:10px;
 
 /* FICHA TÉCNICA */
 .ficha-tecnica{
-max-width:600px;
-margin:40px auto;
+  max-width:1100px;
+  margin:40px auto 0;
+  padding:0 20px;
 }
 
 .ficha-tecnica h3{
-text-align:center;
-margin-bottom:20px;
+  text-align:center;
+  margin-bottom:18px;
+  font-size:22px;
 }
 
 .ficha-tecnica ul{
-list-style:none;
-padding:0;
-margin:0;
-font-size:15px;
+  list-style:none;
+  padding:0;
+  margin:0;
+  font-size:14px;
 }
 
 .ficha-tecnica li{
-display:grid;
-grid-template-columns:180px 1fr;
-padding:6px 0;
-border-bottom:1px solid #eee;
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:20px;
+  padding:5px 0;
+  border-bottom:1px solid #eeeeee;
+  line-height:1.35;
 }
 
 .ficha-tecnica strong{
-font-weight:600;
-color:#333;
+  font-weight:600;
+  color:#333;
 }
 /* BLOCOS DE VARIAÇÕES */
 
