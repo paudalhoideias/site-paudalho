@@ -71,8 +71,8 @@ function initMobileMenu() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const botoesWhatsapp = document.querySelectorAll("a.botao[data-whatsapp], a.whatsapp-float[data-whatsapp]");
-  const numeroWhatsapp = "5511999999999"; // seu número
+  const botoesWhatsapp = document.querySelectorAll("a.botao[data-whatsapp], a.whatsapp[data-whatsapp]");
+  const numeroWhatsapp = "5511934045680";
 
   botoesWhatsapp.forEach(function (botao) {
     botao.addEventListener("click", function (e) {
@@ -86,7 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
-
 async function initComponents() {
   await loadComponent("#site-header", "assets/components/header.html");
   await loadComponent("#site-footer", "assets/components/footer.html");
