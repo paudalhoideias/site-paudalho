@@ -26,7 +26,7 @@ function trocarImagem(idImagemPrincipal, src) {
 }
 document.addEventListener("DOMContentLoaded", function () {
   const modal = document.getElementById("modalPersonalizacao");
-  const abrir = document.querySelector(".btn-personalizacao");
+  const abrir = document.querySelectorAll(".btn-personalizacao");
   const fechar = document.getElementById("fecharModalPersonalizacao");
 
   if (!modal || !abrir || !fechar) return;
