@@ -70,15 +70,22 @@ function initMobileMenu() {
   });
 }
 
-function initWhatsAppLinks() {
-  const whatsappLinks = document.querySelectorAll("[data-whatsapp]");
+document.addEventListener("DOMContentLoaded", function () {
+  const botoesWhatsapp = document.querySelectorAll("[data-whatsapp]");
+  const numeroWhatsapp = "5511999999999"; // coloque seu número aqui
 
-  whatsappLinks.forEach(link => {
-    link.setAttribute("href", WHATSAPP_LINK);
-    link.setAttribute("target", "_blank");
-    link.setAttribute("rel", "noopener noreferrer");
+  botoesWhatsapp.forEach(function (botao) {
+    botao.addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const mensagem = this.getAttribute("data-whatsapp");
+      if (!mensagem) return;
+
+      const url = `https://wa.me/${numeroWhatsapp}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, "_blank");
+    });
   });
-}
+});
 
 async function initComponents() {
   await loadComponent("#site-header", "assets/components/header.html");
