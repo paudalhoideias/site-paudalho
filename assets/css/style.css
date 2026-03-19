@@ -941,11 +941,12 @@ width:60px;
   position: fixed;
   right: 20px;
   bottom: 20px;
-  z-index: 999;
+  z-index: 9999;
+  display: block;
 }
 
 .whatsapp-float img {
-  width: 120px;
-  height: auto;
   display: block;
+  width: 140px;
+  height: auto;
 }
