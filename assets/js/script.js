@@ -71,8 +71,8 @@ function initMobileMenu() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  const botoesWhatsapp = document.querySelectorAll("[data-whatsapp]");
-  const numeroWhatsapp = "5511934045680"; // coloque seu número aqui
+  const botoesWhatsapp = document.querySelectorAll("a.botao[data-whatsapp], a.whatsapp-float[data-whatsapp]");
+  const numeroWhatsapp = "5511999999999"; // seu número
 
   botoesWhatsapp.forEach(function (botao) {
     botao.addEventListener("click", function (e) {
