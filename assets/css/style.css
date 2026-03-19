@@ -934,19 +934,20 @@ font-size:12px;
 grid-template-columns:repeat(2,1fr);
 }
 
-.whatsapp img{
-width:60px;
-}
-.whatsapp-float {
+.whatsapp{
   position: fixed;
-  right: 20px;
   bottom: 20px;
-  z-index: 9999;
+  right: 20px;
+  z-index: 1200;
+}
+
+.whatsapp img{
+  width: 70px;
   display: block;
 }
 
-.whatsapp-float img {
-  display: block;
-  width: 140px;
-  height: auto;
+@media(max-width:768px){
+  .whatsapp img{
+    width: 60px;
+  }
 }
