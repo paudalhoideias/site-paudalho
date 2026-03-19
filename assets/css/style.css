@@ -937,5 +937,15 @@ grid-template-columns:repeat(2,1fr);
 .whatsapp img{
 width:60px;
 }
+.whatsapp-float {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 999;
+}
 
+.whatsapp-float img {
+  width: 120px;
+  height: auto;
+  display: block;
 }
