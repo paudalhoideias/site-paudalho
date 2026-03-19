@@ -26,10 +26,10 @@ function trocarImagem(idImagemPrincipal, src) {
 }
 document.addEventListener("DOMContentLoaded", function () {
   const modal = document.getElementById("modalPersonalizacao");
-  const abrir = document.querySelectorAll(".btn-personalizacao");
+  const botoesAbrir = document.querySelectorAll(".btn-personalizacao");
   const fechar = document.getElementById("fecharModalPersonalizacao");
 
-  if (!modal || !abrir || !fechar) return;
+  if (!modal || !fechar || !botoesAbrir.length) return;
 
   function abrirModal() {
     modal.classList.add("ativo");
@@ -43,7 +43,10 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.style.overflow = "";
   }
 
-  abrir.addEventListener("click", abrirModal);
+  botoesAbrir.forEach(function (botao) {
+    botao.addEventListener("click", abrirModal);
+  });
+
   fechar.addEventListener("click", fecharModal);
 
   modal.addEventListener("click", function (e) {
