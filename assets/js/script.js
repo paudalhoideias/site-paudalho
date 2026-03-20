@@ -91,10 +91,8 @@ async function initComponents() {
   await loadComponent("#site-footer", "assets/components/footer.html");
 
   initMobileMenu();
-  initWhatsAppLinks();
-}
+  }
 
 document.addEventListener("DOMContentLoaded", async () => {
   await initComponents();
-  initWhatsAppLinks();
 });
