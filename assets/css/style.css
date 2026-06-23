@@ -406,6 +406,18 @@ box-sizing:border-box;
   display: block;
   margin: 0 auto 18px auto;
 }
+.modelo-imagem{
+  width:100%;
+  height:260px;
+  margin-bottom:20px;
+}
+
+.modelo-imagem img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
 /* novos cards adicionados */
 .card-area {
   padding: 18px;
