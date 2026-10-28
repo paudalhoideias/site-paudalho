@@ -19,10 +19,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pau D'Alho Ideias Criativas</title>
+<title>Móveis e Brinquedos Infantis de Madeira | Pau D'Alho</title>
+<meta name="description" content="Conheça os móveis e brinquedos infantis de madeira da Pau D'Alho. Torres de aprendizagem, mesas, cadeiras e soluções para a autonomia das crianças.">
 
 <link rel="stylesheet" href="assets/css/style.css">
 
+<style>
+/* Revisão da primeira tela — estilos isolados da página inicial */
+.hero-home { min-height: 450px; height: auto; box-sizing: border-box; padding: 75px 24px; }
+.hero-home .hero-texto { max-width: 760px; }
+.hero-home .hero-chamada { font-size: 14px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 14px; }
+.hero-home h1 { font-size: clamp(34px, 5vw, 54px); line-height: 1.13; text-wrap: balance; }
+.hero-home .hero-descricao { max-width: 640px; line-height: 1.6; }
+.hero-home .hero-acoes { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 28px; }
+.hero-home .hero-acoes .botao { margin: 0; }
+.hero-home .botao-contato { background: #fff; color: #235b2a; }
+.hero-home .botao-contato:hover { background: #f2f7f1; }
+@media (max-width: 600px) { .hero-home { min-height: 480px; padding: 65px 20px; } .hero-home .hero-acoes { flex-direction: column; width: 100%; max-width: 340px; } .hero-home .hero-acoes .botao { text-align: center; } }
+</style>
 </head>
 
 <body>
@@ -41,23 +55,16 @@
 <div id="site-header"></div>
 <!-- FIM: SUBSTITUI O HEADER ANTIGO -->
 
-<section class="hero hero-home">
-
-<div class="hero-texto">
-
-<h1>Bem-vindo à Floresta Criativa</h1>
-
-<p>
-Um lugar onde a madeira vira imaginação.
-Produtos pensados para estimular autonomia, criatividade e momentos em família.
-</p>
-
-<a class="botao" href="produtos.html">
-Explorar Produtos
-</a>
-
-</div>
-
+<section class="hero hero-home" aria-labelledby="titulo-home">
+  <div class="hero-texto">
+    <p class="hero-chamada">Bem-vindo à Floresta Criativa</p>
+    <h1 id="titulo-home">Onde a madeira vira imaginação.</h1>
+    <p class="hero-descricao">Móveis e brinquedos infantis de madeira, criados para incentivar a autonomia, a criatividade e as descobertas do dia a dia.</p>
+    <div class="hero-acoes">
+      <a class="botao" href="produtos.html">Conheça nossos produtos</a>
+      <a class="botao botao-contato" href="https://wa.me/5511934045680?text=Ol%C3%A1%21%20Vim%20pela%20p%C3%A1gina%20inicial%20da%20Pau%20D%27Alho%20e%20gostaria%20de%20conhecer%20os%20produtos." target="_blank" rel="noopener noreferrer">Fale com a Pau D'Alho</a>
+    </div>
+  </div>
 </section>
 
 <section class="categorias">
