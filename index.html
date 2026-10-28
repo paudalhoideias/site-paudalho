@@ -41,6 +41,22 @@
 .categorias .card-area h3 { font-size: 23px; }
 .categorias .card-area p { line-height: 1.5; }
 @media (max-width: 600px) { .categorias-intro { font-size: 16px; margin-bottom: 26px; } }
+
+/* Produtos em destaque — página inicial */
+.home-destaques { background: #fffdf9; padding: 64px 20px; }
+.home-destaques-container { max-width: 1100px; margin: 0 auto; }
+.home-destaques h2 { text-align: center; font-size: clamp(28px, 3vw, 34px); margin: 0 0 12px; color: #3e352d; }
+.home-destaques-intro { text-align: center; max-width: 650px; margin: 0 auto 32px; color: #5e5a54; }
+.home-destaques-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.home-produto-card { background: white; border: 1px solid #ebe4d9; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+.home-produto-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: #f8f6f1; }
+.home-produto-conteudo { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+.home-produto-conteudo h3 { font-size: 23px; margin: 0 0 8px; color: #3c352f; }
+.home-produto-conteudo p { margin: 0 0 18px; line-height: 1.55; color: #595959; flex: 1; }
+.home-produto-conteudo a { color: #246a2c; text-decoration: underline; text-underline-offset: 4px; font-weight: 700; }
+.home-produto-conteudo a:hover { color: #16451e; }
+@media (max-width: 800px) { .home-destaques-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .home-destaques { padding: 48px 18px; } .home-destaques-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 
@@ -105,6 +121,27 @@
 
   </div>
 
+</section>
+
+<section class="home-destaques" aria-labelledby="home-destaques-titulo">
+  <div class="home-destaques-container">
+    <h2 id="home-destaques-titulo">Conheça alguns dos nossos produtos</h2>
+    <p class="home-destaques-intro">Peças pensadas para acompanhar as descobertas e a autonomia das crianças.</p>
+    <div class="home-destaques-grid">
+      <article class="home-produto-card">
+        <img src="assets/images/torres/3em1/3em1_Raz_n01.webp" alt="Torre de aprendizagem 3 em 1 de madeira" loading="lazy">
+        <div class="home-produto-conteudo"><h3>Torre 3 em 1</h3><p>Torre de aprendizagem ajustável que também pode ser usada como cadeira e mesa.</p><a href="torres.html" aria-label="Conhecer a Torre 3 em 1">Conhecer a Torre 3 em 1 →</a></div>
+      </article>
+      <article class="home-produto-card">
+        <img src="assets/images/clareira/cadeira_cubo.webp" alt="Cadeira Cubo infantil de madeira" loading="lazy">
+        <div class="home-produto-conteudo"><h3>Cadeira Cubo</h3><p>Uma peça versátil para os pequenos sentarem, brincarem e explorarem seus espaços.</p><a href="clareira.html" aria-label="Conhecer a Cadeira Cubo">Conhecer a Cadeira Cubo →</a></div>
+      </article>
+      <article class="home-produto-card">
+        <img src="assets/images/caverna/torre_livros.webp" alt="Torre de Livros infantil de madeira" loading="lazy">
+        <div class="home-produto-conteudo"><h3>Torre de Livros</h3><p>Organização acessível para incentivar a escolha e o contato com os livros.</p><a href="caverna.html" aria-label="Conhecer a Torre de Livros">Conhecer a Torre de Livros →</a></div>
+      </article>
+    </div>
+  </div>
 </section>
  <!-- INÍCIO: Form newsletter -->
 <section class="newsletter-home">
