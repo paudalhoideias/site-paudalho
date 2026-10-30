@@ -65,6 +65,16 @@
 .home-contato p { max-width: 630px; margin: 0 auto 10px; font-size: 17px; line-height: 1.6; color: #4a554a; }
 .home-contato .home-contato-botao { margin-top: 22px; }
 @media (max-width: 600px) { .home-contato { padding: 48px 20px; } .home-contato p { font-size: 16px; } }
+
+/* Apresentação institucional na home */
+.home-historia { padding: 70px 20px; background: #f7f3eb; }
+.home-historia-conteudo { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 50px; }
+.home-historia-etiqueta { color: #507049; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.home-historia-texto h2 { margin: 12px 0 18px; font-size: clamp(27px,3.1vw,38px); line-height: 1.2; color: #3c3329; }
+.home-historia-texto > p:not(.home-historia-etiqueta) { font-size: 17px; line-height: 1.7; color: #554d44; }
+.home-historia-link { display: inline-block; margin-top: 12px; color: #2e7035; font-weight: 700; text-underline-offset: 4px; }
+.home-historia-foto-pendente { min-height: 340px; background: #e6dccb; color: #685b49; border: 2px dashed #b7a891; border-radius: 15px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+@media (max-width: 750px) { .home-historia-conteudo { grid-template-columns: 1fr; gap: 24px; } .home-historia { padding: 50px 20px; } .home-historia-foto-pendente { min-height: 250px; } }
 </style>
 </head>
 
@@ -149,6 +159,18 @@
         <div class="home-produto-conteudo"><h3>Torre de Livros</h3><p>Organização acessível para incentivar a escolha e o contato com os livros.</p><a href="caverna.html#torre-livros" aria-label="Conhecer a Torre de Livros">Conhecer a Torre de Livros →</a></div>
       </article>
     </div>
+  </div>
+</section>
+<section class="home-historia" aria-labelledby="home-historia-titulo">
+  <div class="home-historia-conteudo">
+    <div class="home-historia-texto">
+      <p class="home-historia-etiqueta">Feito com cuidado, pensado para a infância</p>
+      <h2 id="home-historia-titulo">Da nossa oficina para as descobertas da infância</h2>
+      <p>Na Pau D'Alho, cada peça nasce do trabalho artesanal com madeira e do desejo de fazer parte das descobertas das crianças. Criamos móveis e brinquedos que unem funcionalidade, imaginação e momentos em família.</p>
+      <a href="pau-dalho.html" class="home-historia-link">Conheça a Pau D'Alho →</a>
+    </div>
+    <!-- Espaço para a fotografia real da oficina, em processo de preparação. -->
+    <div class="home-historia-foto-pendente" role="note">Foto da nossa oficina em preparação</div>
   </div>
 </section>
 <section class="home-contato" aria-labelledby="home-contato-titulo">
