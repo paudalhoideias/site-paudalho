@@ -57,6 +57,14 @@
 .home-produto-conteudo a:hover { color: #16451e; }
 @media (max-width: 800px) { .home-destaques-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 560px) { .home-destaques { padding: 48px 18px; } .home-destaques-grid { grid-template-columns: 1fr; } }
+
+/* CTA comercial na home, substituindo o formulário de newsletter */
+.home-contato { background: #e8efe8; padding: 64px 20px; text-align: center; }
+.home-contato-inner { max-width: 760px; margin: 0 auto; }
+.home-contato h2 { font-size: clamp(26px, 3.2vw, 34px); line-height: 1.2; margin: 0 0 16px; color: #2d3b2d; }
+.home-contato p { max-width: 630px; margin: 0 auto 10px; font-size: 17px; line-height: 1.6; color: #4a554a; }
+.home-contato .home-contato-botao { margin-top: 22px; }
+@media (max-width: 600px) { .home-contato { padding: 48px 20px; } .home-contato p { font-size: 16px; } }
 </style>
 </head>
 
@@ -143,51 +151,13 @@
     </div>
   </div>
 </section>
- <!-- INÍCIO: Form newsletter -->
-<section class="newsletter-home">
-
-<h2>Acompanhe as novidades da Floresta Criativa</h2>
-
-<p>
-Receba lançamentos, ideias e novidades da Pau D'Alho.
-</p>
-
-<form 
-class="form-newsletter-home"
-action="https://formsubmit.co/paudalhoideias@gmail.com"
-method="POST"
->
-
-<input type="hidden" name="_subject" value="Novo cadastro - Newsletter Pau D'Alho">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="obrigado.html">
-
-<div class="newsletter-grid">
-
-<input type="text" name="nome" placeholder="Seu nome" required>
-
-<input type="email" name="email" placeholder="Seu email" required>
-
-<button type="submit" class="botao">
-Quero acompanhar
-</button>
-
-</div>
-
-<div class="checkbox-news">
-
-<label>
-<input type="checkbox" name="lgpd" required>
-Autorizo receber novidades e comunicações da Pau D'Alho por email ou WhatsApp.
-Prometemos não enviar spam. Apenas novidades da Floresta Criativa.
-</label>
-
-</div>
-
-</form>
-
+<section class="home-contato" aria-labelledby="home-contato-titulo">
+  <div class="home-contato-inner">
+    <h2 id="home-contato-titulo">Vamos encontrar o móvel ideal para sua criança?</h2>
+    <p>Tem dúvidas sobre modelos, tamanhos ou acabamentos? Converse diretamente com a Pau D'Alho e descubra as opções disponíveis.</p>
+    <a class="botao home-contato-botao" href="https://wa.me/5511934045680?text=Ol%C3%A1%21%20Vim%20pela%20p%C3%A1gina%20inicial%20da%20Pau%20D%27Alho%20e%20gostaria%20de%20ajuda%20para%20escolher%20um%20m%C3%B3vel." target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>
+  </div>
 </section>
- <!-- FIM: Form newsletter -->
  
 <!-- INÍCIO: SUBSTITUI O FOOTER ANTIGO -->
 <div id="site-footer"></div>
