@@ -19,10 +19,66 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pau D'Alho Ideias Criativas</title>
+<title>Móveis e Brinquedos Infantis de Madeira | Pau D'Alho</title>
+<meta name="description" content="Conheça os móveis e brinquedos infantis de madeira da Pau D'Alho. Torres de aprendizagem, mesas, cadeiras e soluções para a autonomia das crianças.">
 
 <link rel="stylesheet" href="assets/css/style.css">
 
+<style>
+/* Revisão da primeira tela — estilos isolados da página inicial */
+.hero-home { min-height: 450px; height: auto; box-sizing: border-box; padding: 75px 24px; }
+.hero-home .hero-texto { max-width: 760px; }
+.hero-home .hero-chamada { font-size: 14px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; margin-bottom: 14px; }
+.hero-home h1 { font-size: clamp(34px, 5vw, 54px); line-height: 1.13; text-wrap: balance; }
+.hero-home .hero-descricao { max-width: 640px; line-height: 1.6; }
+.hero-home .hero-acoes { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 28px; }
+.hero-home .hero-acoes .botao { margin: 0; }
+.hero-home .botao-contato { background: #fff; color: #235b2a; }
+.hero-home .botao-contato:hover { background: #f2f7f1; }
+@media (max-width: 600px) { .hero-home { min-height: 480px; padding: 65px 20px; } .hero-home .hero-acoes { flex-direction: column; width: 100%; max-width: 340px; } .hero-home .hero-acoes .botao { text-align: center; } }
+.categorias-intro { max-width: 650px; margin: -10px auto 32px; color: #5c5c5c; font-size: 17px; line-height: 1.55; }
+.categorias .card-area { display: block; }
+.categorias .card-area h3 { font-size: 23px; }
+.categorias .card-area p { line-height: 1.5; }
+@media (max-width: 600px) { .categorias-intro { font-size: 16px; margin-bottom: 26px; } }
+
+/* Produtos em destaque — página inicial */
+.home-destaques { background: #fffdf9; padding: 64px 20px; }
+.home-destaques-container { max-width: 1100px; margin: 0 auto; }
+.home-destaques h2 { text-align: center; font-size: clamp(28px, 3vw, 34px); margin: 0 0 12px; color: #3e352d; }
+.home-destaques-intro { text-align: center; max-width: 650px; margin: 0 auto 32px; color: #5e5a54; }
+.home-destaques-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+.home-produto-card { background: white; border: 1px solid #ebe4d9; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+.home-produto-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: #f8f6f1; }
+.home-produto-conteudo { padding: 20px; display: flex; flex-direction: column; flex: 1; }
+.home-produto-conteudo h3 { font-size: 23px; margin: 0 0 8px; color: #3c352f; }
+.home-produto-conteudo p { margin: 0 0 18px; line-height: 1.55; color: #595959; flex: 1; }
+.home-produto-conteudo a { color: #246a2c; text-decoration: underline; text-underline-offset: 4px; font-weight: 700; }
+.home-produto-conteudo a:hover { color: #16451e; }
+@media (max-width: 800px) { .home-destaques-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .home-destaques { padding: 48px 18px; } .home-destaques-grid { grid-template-columns: 1fr; } }
+
+/* CTA comercial na home, substituindo o formulário de newsletter */
+.home-contato { background: #e8efe8; padding: 64px 20px; text-align: center; }
+.home-contato-inner { max-width: 760px; margin: 0 auto; }
+.home-contato h2 { font-size: clamp(26px, 3.2vw, 34px); line-height: 1.2; margin: 0 0 16px; color: #2d3b2d; }
+.home-contato p { max-width: 630px; margin: 0 auto 10px; font-size: 17px; line-height: 1.6; color: #4a554a; }
+.home-contato .home-contato-botao { margin-top: 22px; }
+@media (max-width: 600px) { .home-contato { padding: 48px 20px; } .home-contato p { font-size: 16px; } }
+
+/* Apresentação institucional na home */
+.home-historia { padding: 70px 20px; background: #f7f3eb; }
+.home-historia-conteudo { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 50px; }
+.home-historia-etiqueta { color: #507049; font-size: 13px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.home-historia-texto h2 { margin: 12px 0 18px; font-size: clamp(27px,3.1vw,38px); line-height: 1.2; color: #3c3329; }
+.home-historia-texto > p:not(.home-historia-etiqueta) { font-size: 17px; line-height: 1.7; color: #554d44; }
+.home-historia-link { display: inline-block; margin-top: 12px; color: #2e7035; font-weight: 700; text-underline-offset: 4px; }
+.home-historia-foto-pendente { min-height: 340px; background: #e6dccb; color: #685b49; border: 2px dashed #b7a891; border-radius: 15px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; }
+@media (max-width: 750px) { .home-historia-conteudo { grid-template-columns: 1fr; gap: 24px; } .home-historia { padding: 50px 20px; } .home-historia-foto-pendente { min-height: 250px; } }
+.home-historia-figura { margin: 0; min-width: 0; overflow: hidden; border-radius: 15px; background: #e6dccb; }
+.home-historia-figura img { display: block; width: 100%; height: 440px; object-fit: cover; object-position: center 48%; }
+@media (max-width: 750px) { .home-historia-figura img { height: auto; max-height: 520px; object-fit: contain; } }
+</style>
 </head>
 
 <body>
@@ -41,103 +97,92 @@
 <div id="site-header"></div>
 <!-- FIM: SUBSTITUI O HEADER ANTIGO -->
 
-<section class="hero hero-home">
-
-<div class="hero-texto">
-
-<h1>Bem-vindo à Floresta Criativa</h1>
-
-<p>
-Um lugar onde a madeira vira imaginação.
-Produtos pensados para estimular autonomia, criatividade e momentos em família.
-</p>
-
-<a class="botao" href="produtos.html">
-Explorar Produtos
-</a>
-
-</div>
-
+<section class="hero hero-home" aria-labelledby="titulo-home">
+  <div class="hero-texto">
+    <p class="hero-chamada">Bem-vindo à Floresta Criativa</p>
+    <h1 id="titulo-home">Onde a madeira vira imaginação.</h1>
+    <p class="hero-descricao">Móveis e brinquedos infantis de madeira, criados para incentivar a autonomia, a criatividade e as descobertas do dia a dia.</p>
+    <div class="hero-acoes">
+      <a class="botao" href="produtos.html">Conheça nossos produtos</a>
+      <a class="botao botao-contato" href="https://wa.me/5511934045680?text=Ol%C3%A1%21%20Vim%20pela%20p%C3%A1gina%20inicial%20da%20Pau%20D%27Alho%20e%20gostaria%20de%20conhecer%20os%20produtos." target="_blank" rel="noopener noreferrer">Fale com a Pau D'Alho</a>
+    </div>
+  </div>
 </section>
 
 <section class="categorias">
  
-  <h2>Nossas Áreas</h2>
+  <h2>Explore a Floresta Criativa</h2>
+  <p class="categorias-intro">Encontre móveis e brinquedos infantis para cada momento de descoberta.</p>
 
   <div class="grid">
 
     <a href="torres.html" class="card card-area">
       <img src="assets/images/card-torre-descoberta.webp" alt="Torre da Descoberta" class="card-area-img">
       <h3>Torre da Descoberta</h3>
-      <p>Torres de aprendizagem.</p>
+      <p>Torres de aprendizagem infantis, incluindo modelos ajustáveis.</p>
     </a>
 
     <a href="laboratorio.html" class="card card-area">
       <img src="assets/images/card-laboratorio-julia.webp" alt="Laboratório da Júlia" class="card-area-img">
       <h3>Laboratório da Júlia</h3>
-      <p>Novidades e produtos em teste.</p>
+      <p>Novidades, ideias criativas e projetos em desenvolvimento.</p>
     </a>
 
     <a href="clareira.html" class="card card-area">
       <img src="assets/images/card-clareira-descanso.webp" alt="Clareira do Descanso" class="card-area-img">
       <h3>Clareira do Descanso</h3>
-      <p>Cadeiras e mesas infantis.</p>
+      <p>Mesas e cadeiras infantis para brincar, aprender e criar.</p>
     </a>
 
     <a href="caverna.html" class="card card-area">
       <img src="assets/images/card-caverna-tesouros.webp" alt="Caverna dos Tesouros" class="card-area-img">
       <h3>Caverna dos Tesouros</h3>
-      <p>Prateleiras e organizadores.</p>
+      <p>Prateleiras e organizadores infantis para deixar tudo ao alcance.</p>
     </a>
 
   </div>
 
 </section>
- <!-- INÍCIO: Form newsletter -->
-<section class="newsletter-home">
 
-<h2>Acompanhe as novidades da Floresta Criativa</h2>
-
-<p>
-Receba lançamentos, ideias e novidades da Pau D'Alho.
-</p>
-
-<form 
-class="form-newsletter-home"
-action="https://formsubmit.co/paudalhoideias@gmail.com"
-method="POST"
->
-
-<input type="hidden" name="_subject" value="Novo cadastro - Newsletter Pau D'Alho">
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_next" value="obrigado.html">
-
-<div class="newsletter-grid">
-
-<input type="text" name="nome" placeholder="Seu nome" required>
-
-<input type="email" name="email" placeholder="Seu email" required>
-
-<button type="submit" class="botao">
-Quero acompanhar
-</button>
-
-</div>
-
-<div class="checkbox-news">
-
-<label>
-<input type="checkbox" name="lgpd" required>
-Autorizo receber novidades e comunicações da Pau D'Alho por email ou WhatsApp.
-Prometemos não enviar spam. Apenas novidades da Floresta Criativa.
-</label>
-
-</div>
-
-</form>
-
+<section class="home-destaques" aria-labelledby="home-destaques-titulo">
+  <div class="home-destaques-container">
+    <h2 id="home-destaques-titulo">Conheça alguns dos nossos produtos</h2>
+    <p class="home-destaques-intro">Peças pensadas para acompanhar as descobertas e a autonomia das crianças.</p>
+    <div class="home-destaques-grid">
+      <article class="home-produto-card">
+        <img src="assets/images/torres/3em1/3em1_Raz_n01.webp" alt="Torre de aprendizagem 3 em 1 de madeira" loading="lazy">
+        <div class="home-produto-conteudo"><h3>Torre 3 em 1</h3><p>Torre de aprendizagem ajustável que também pode ser usada como cadeira e mesa.</p><a href="torres.html#torre3em1" aria-label="Conhecer a Torre 3 em 1">Conhecer a Torre 3 em 1 →</a></div>
+      </article>
+      <article class="home-produto-card">
+        <img src="assets/images/clareira/cadeira_cubo.webp" alt="Cadeira Cubo infantil de madeira" loading="lazy">
+        <div class="home-produto-conteudo"><h3>Cadeira Cubo</h3><p>Uma peça versátil para os pequenos sentarem, brincarem e explorarem seus espaços.</p><a href="clareira.html#cadeira-cubo" aria-label="Conhecer a Cadeira Cubo">Conhecer a Cadeira Cubo →</a></div>
+      </article>
+      <article class="home-produto-card">
+        <img src="assets/images/caverna/torre_livros.webp" alt="Torre de Livros infantil de madeira" loading="lazy">
+        <div class="home-produto-conteudo"><h3>Torre de Livros</h3><p>Organização acessível para incentivar a escolha e o contato com os livros.</p><a href="caverna.html#torre-livros" aria-label="Conhecer a Torre de Livros">Conhecer a Torre de Livros →</a></div>
+      </article>
+    </div>
+  </div>
 </section>
- <!-- FIM: Form newsletter -->
+<section class="home-historia" aria-labelledby="home-historia-titulo">
+  <div class="home-historia-conteudo">
+    <div class="home-historia-texto">
+      <p class="home-historia-etiqueta">Feito com cuidado, pensado para a infância</p>
+      <h2 id="home-historia-titulo">Da nossa oficina para as descobertas da infância</h2>
+      <p>Na Pau D'Alho, cada peça nasce do trabalho artesanal com madeira e do desejo de fazer parte das descobertas das crianças. Criamos móveis e brinquedos que unem funcionalidade, imaginação e momentos em família.</p>
+      <a href="pau-dalho.html" class="home-historia-link">Conheça a Pau D'Alho →</a>
+    </div>
+    <!-- Espaço para a fotografia real da oficina, em processo de preparação. -->
+    <figure class="home-historia-figura"><img src="assets/images/oficina-julia-home.webp" alt="Júlia aplicando acabamento com rolinho em uma peça de madeira, acompanhada na oficina da Pau D’Alho" loading="lazy" width="800" height="1000"></figure>
+  </div>
+</section>
+<section class="home-contato" aria-labelledby="home-contato-titulo">
+  <div class="home-contato-inner">
+    <h2 id="home-contato-titulo">Vamos encontrar o móvel ideal para sua criança?</h2>
+    <p>Tem dúvidas sobre modelos, tamanhos ou acabamentos? Converse diretamente com a Pau D'Alho e descubra as opções disponíveis.</p>
+    <a class="botao home-contato-botao" href="https://wa.me/5511934045680?text=Ol%C3%A1%21%20Vim%20pela%20p%C3%A1gina%20inicial%20da%20Pau%20D%27Alho%20e%20gostaria%20de%20ajuda%20para%20escolher%20um%20m%C3%B3vel." target="_blank" rel="noopener noreferrer">Conversar pelo WhatsApp</a>
+  </div>
+</section>
  
 <!-- INÍCIO: SUBSTITUI O FOOTER ANTIGO -->
 <div id="site-footer"></div>
