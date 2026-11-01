@@ -75,6 +75,9 @@
 .home-historia-link { display: inline-block; margin-top: 12px; color: #2e7035; font-weight: 700; text-underline-offset: 4px; }
 .home-historia-foto-pendente { min-height: 340px; background: #e6dccb; color: #685b49; border: 2px dashed #b7a891; border-radius: 15px; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; }
 @media (max-width: 750px) { .home-historia-conteudo { grid-template-columns: 1fr; gap: 24px; } .home-historia { padding: 50px 20px; } .home-historia-foto-pendente { min-height: 250px; } }
+.home-historia-figura { margin: 0; min-width: 0; overflow: hidden; border-radius: 15px; background: #e6dccb; }
+.home-historia-figura img { display: block; width: 100%; height: 440px; object-fit: cover; object-position: center 48%; }
+@media (max-width: 750px) { .home-historia-figura img { height: auto; max-height: 520px; object-fit: contain; } }
 </style>
 </head>
 
@@ -170,7 +173,7 @@
       <a href="pau-dalho.html" class="home-historia-link">Conheça a Pau D'Alho →</a>
     </div>
     <!-- Espaço para a fotografia real da oficina, em processo de preparação. -->
-    <div class="home-historia-foto-pendente" role="note">Foto da nossa oficina em preparação</div>
+    <figure class="home-historia-figura"><img src="assets/images/oficina-julia-home.webp" alt="Júlia aplicando acabamento com rolinho em uma peça de madeira, acompanhada na oficina da Pau D’Alho" loading="lazy" width="800" height="1000"></figure>
   </div>
 </section>
 <section class="home-contato" aria-labelledby="home-contato-titulo">
