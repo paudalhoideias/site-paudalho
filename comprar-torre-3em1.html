@@ -20,22 +20,29 @@ function atualizarResumo(){
 [revestimento,fita,lousa].forEach(el=>el.addEventListener('change',atualizarResumo));
 atualizarResumo();
 document.getElementById('cotar').addEventListener('click',async()=>{const cep=document.getElementById('cep').value.replace(/\D/g,'');lista.replaceChildren();frete.textContent='—';freteEscolhido=null;atualizarResumo();if(!/^[0-9]{8}$/.test(cep)){estado.textContent='Informe um CEP válido com 8 números.';return}estado.textContent='Consultando opções no Sandbox...';try{const r=await fetch('/api/melhor-envio/cotacao',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({destination_cep:cep})});const data=await r.json();if(!r.ok)throw Error(data.error||'Cotação indisponível');if(!data.servicos?.length){estado.textContent='Nenhuma opção disponível para esse destino no Sandbox.';return}estado.textContent='Selecione uma opção simulada. Valores não válidos para pagamento.';data.servicos.forEach((servico,i)=>{const valor=Number(servico.preco);if(!Number.isFinite(valor)||valor<0)return;const linha=document.createElement('div');linha.className='compra-opcao';const label=document.createElement('label');const radio=document.createElement('input');radio.type='radio';radio.name='frete';radio.value=String(valor);radio.addEventListener('change',()=>{freteEscolhido=valor;frete.textContent=moeda(valor);atualizarResumo()});const texto=document.createElement('span');texto.textContent=[servico.transportadora,servico.nome,servico.prazo_dias+' dias (transporte)'].join(' · ');label.append(radio,texto);const preco=document.createElement('strong');preco.textContent=valor.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});linha.append(label,preco);lista.append(linha)})}catch(e){estado.textContent=e.message==='Failed to fetch'?'Falha de conexão. Tente novamente.':e.message}});
-document.getElementById('simular-pedido').addEventListener('click',()=>{
+document.getElementById('simular-pedido').addEventListener('click',async()=>{
  const nome=document.getElementById('cliente-nome').value.trim();
  const email=document.getElementById('cliente-email').value.trim();
  const telefone=document.getElementById('cliente-telefone').value.trim();
  const endereco=document.getElementById('endereco').value.trim();
  const out=document.getElementById('pedido-resultado');out.hidden=false;out.replaceChildren();
  const linha=t=>{const p=document.createElement('p');p.textContent=t;out.append(p)};
- if(!nome||!email||!telefone||!endereco||!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)||freteEscolhido===null){linha('Preencha todos os campos e selecione um frete de teste antes de visualizar o pedido.');return}
- const preco=330+(revestimento.value==='nao'?0:50)+(lousa.value==='sim'?40:0);
- linha('SIMULAÇÃO — pedido não registrado');
- linha('Cliente: '+nome+' | E-mail: '+email);
- linha('Telefone: '+telefone+' | Destino: '+endereco);
- linha('Torre 3 em 1 | Fita: '+fita.value+' | Revestimento: '+revestimento.value+' | Lousa: '+lousa.value);
- linha('Produto: '+moeda(preco)+' | Frete simulado: '+moeda(freteEscolhido));
- linha('Total apenas ilustrativo: '+moeda(preco+freteEscolhido));
- linha('Pagamento desejado: '+(document.getElementById('metodo').value==='pix'?'Pix Inter — sujeito a conferência no extrato':'Cartão Mercado Pago — ainda indisponível'));
- linha('Produção: até 20 dias úteis após confirmação; transporte tem prazo adicional.');
+ if(!nome||!email||!telefone||!endereco||!email.includes('@')||freteEscolhido===null){
+  linha('Preencha os dados e selecione um frete de teste antes de visualizar o resumo.');return;
+ }
+ try{
+  const metodo=document.getElementById('metodo').value;
+  const r=await fetch('/api/pedidos/resumo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({fita:fita.value,revestimento:revestimento.value,lousa:lousa.value,metodo})});
+  const pedido=await r.json();if(!r.ok)throw Error(pedido.error||'Resumo indisponível');
+  linha('SIMULAÇÃO — nenhum pedido registrado ou pagamento iniciado');
+  linha('Cliente: '+nome+' | E-mail: '+email);
+  linha('Telefone: '+telefone+' | Destino: '+endereco);
+  linha('Torre 3 em 1 | Fita: '+pedido.configuracao.fita+' | Revestimento: '+pedido.configuracao.revestimento+' | Lousa: '+pedido.configuracao.lousa);
+  linha('Produto (valor conferido pelo servidor): '+moeda(pedido.preco_produto_centavos/100));
+  linha('Frete de teste, não validado: '+moeda(freteEscolhido));
+  linha('Total ilustrativo: '+moeda(pedido.preco_produto_centavos/100+freteEscolhido));
+  linha('Pagamento desejado: '+(metodo==='pix'?'Pix Inter (conferência manual)':'Cartão Mercado Pago (em preparação)'));
+  linha('Até 20 dias úteis de produção após confirmação, mais o prazo de transporte.');
+ }catch(e){linha('Não foi possível validar o resumo: '+e.message)}
 });
 </script></body></html>
