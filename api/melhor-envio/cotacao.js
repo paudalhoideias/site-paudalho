@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     return res.status(503).json({ error: 'Cotação ainda não habilitada no Sandbox.' });
   }
   const { destination_cep: destination } = req.body || {};
-  const origin = process.env.PAU_DALHO_ORIGIN_CEP;
+  const origin = '08790200';
   const token = process.env.MELHOR_ENVIO_SANDBOX_ACCESS_TOKEN;
   const box = packageData();
   if (!validCep(origin) || !validCep(destination)) return res.status(400).json({ error: 'CEP inválido ou origem não configurada.' });
