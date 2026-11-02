@@ -36,6 +36,13 @@
 .grid-info .card { transition: none; cursor: default; }
 .grid-info .card:hover { transform: none; }
 </style>
+<style>
+/* Links compactos de categorias na página institucional */
+.sobre-caminhos-links { max-width: 1060px; margin: 26px auto 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+.sobre-caminhos-links a { display: inline-flex; align-items: center; gap: 10px; padding: 13px 18px; border: 1px solid #d8d5c9; border-radius: 999px; background: #fff; color: #395a39; text-decoration: none; font-weight: 600; line-height: 1.3; }
+.sobre-caminhos-links a:hover, .sobre-caminhos-links a:focus-visible { border-color: #607c58; background: #f0f4eb; }
+@media(max-width:600px) { .sobre-caminhos-links { align-items: stretch; flex-direction: column; } .sobre-caminhos-links a { justify-content: space-between; } }
+</style>
 </head>
 
 <body>
@@ -111,43 +118,16 @@
 </div>
 </section>
 
-<section class="secao">
-<h2>O que você encontra por aqui</h2>
-<p class="secao-intro">As categorias da Pau D'Alho foram organizadas para facilitar sua navegação e mostrar como cada linha atende diferentes momentos da infância.</p>
-
-<div class="grid-modelos">
-
-<div class="modelo-card">
-<h3>Torre da Descoberta</h3>
-<p>Torres de aprendizagem desenvolvidas para incentivar a autonomia infantil com segurança e presença da família.</p>
-<a class="botao" href="torres.html">Conhecer</a>
-</div>
-
-<div class="modelo-card">
-<h3>Laboratório da Júlia</h3>
-<p>Espaço de novos produtos, testes e ideias que surgem da observação real da infância dentro da própria marca.</p>
-<a class="botao" href="laboratorio.html">Conhecer</a>
-</div>
-
-<div class="modelo-card">
-<h3>Clareira do Descanso</h3>
-<p>Peças para sentar, apoiar, brincar, desenhar e viver pequenos momentos de pausa e criação.</p>
-<a class="botao" href="clareira.html">Conhecer</a>
-</div>
-
-<div class="modelo-card">
-<h3>Caverna dos Tesouros</h3>
-<p>Prateleiras, nichos e soluções de organização que ajudam a compor ambientes infantis funcionais e bonitos.</p>
-<a class="botao" href="caverna.html">Conhecer</a>
-</div>
-
-  <div class="modelo-card">
-<h3>Trilha da Imaginação</h3>
-<p>Brinquedos e peças criativas como cornhole, blocos e notebook lousa de madeira.</p>
-<a class="botao" href="trilha.html">Conhecer</a>
-</div>
-
-</div>
+<section class="secao sobre-caminhos">
+  <h2>Explore a Floresta Criativa</h2>
+  <p class="secao-intro">Conheça as linhas da Pau D'Alho e encontre o que faz sentido para a sua família.</p>
+  <nav class="sobre-caminhos-links" aria-label="Categorias de produtos">
+    <a href="torres.html">Torre da Descoberta <span aria-hidden="true">→</span></a>
+    <a href="clareira.html">Clareira do Descanso <span aria-hidden="true">→</span></a>
+    <a href="caverna.html">Caverna dos Tesouros <span aria-hidden="true">→</span></a>
+    <a href="trilha.html">Trilha da Imaginação <span aria-hidden="true">→</span></a>
+    <a href="laboratorio.html">Laboratório da Júlia <span aria-hidden="true">→</span></a>
+  </nav>
 </section>
 
 <section class="secao">
