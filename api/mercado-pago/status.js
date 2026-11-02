@@ -16,7 +16,8 @@ export default function handler(req, res) {
     ambiente: 'preview',
     integracao: 'Mercado Pago - Checkout Pro',
     credencial_configurada: Boolean(token),
-    credencial_de_teste: token.startsWith('TEST-'),
+    formato_reconhecido: token.startsWith('APP_USR-') || token.startsWith('TEST-'),
+    ambiente_da_credencial: 'confirmar no painel Mercado Pago > Teste; o prefixo sozinho nao comprova o ambiente',
     pagamento_habilitado: false,
     observacao: 'Diagnostico apenas. Nenhuma order ou cobranca e criada.'
   });
