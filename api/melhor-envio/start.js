@@ -1,6 +1,6 @@
 import { randomBytes, createHmac } from 'node:crypto';
 const host = 'https://site-paudalho-git-r-6037e1-fabricio-oliveiras-projects-d0e317d9.vercel.app';
-const callback = host + '/api/melhor-envio/callback';
+const callback = 'https://www.paudalhoideias.com.br/api/melhor-envio/callback';
 function sign(value, key) { return createHmac('sha256', key).update(value).digest('hex'); }
 export default function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -8,8 +8,8 @@ export default function handler(req, res) {
   res.setHeader('X-Robots-Tag', 'noindex');
   if (process.env.VERCEL_ENV !== 'preview') return res.status(404).end();
   if (req.method !== 'GET') return res.status(405).end();
-  // Integração ainda desativada até a URL do cadastro ser alinhada ao Preview.
-  if (process.env.MELHOR_ENVIO_OAUTH_ENABLED !== 'true') return res.status(503).json({ status: 'preparando-autorizacao', mensagem: 'Aguardando alinhamento da URL de retorno cadastrada no Sandbox.' });
+  // Ainda desativado enquanto não houver troca e guarda segura dos tokens.
+  if (process.env.MELHOR_ENVIO_OAUTH_ENABLED !== 'true') return res.status(503).json({ status: 'preparando-autorizacao', mensagem: 'Autorização ainda não ativada.' });
   const id = process.env.MELHOR_ENVIO_CLIENT_ID;
   const secret = process.env.MELHOR_ENVIO_CLIENT_SECRET;
   if (!id || !secret) return res.status(503).end();
