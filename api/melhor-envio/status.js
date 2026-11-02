@@ -11,7 +11,7 @@ export default function handler(req, res) {
   const clientSecret = (process.env.MELHOR_ENVIO_CLIENT_SECRET || '').trim();
   return res.status(200).json({
     ambiente: 'preview',
-    client_id_configurado: /^\\d+$/.test(clientId),
+    client_id_configurado: /^[0-9]+$/.test(clientId),
     client_secret_configurado: clientSecret.length >= 12 && !clientSecret.startsWith('sk_live_'),
     observacao: 'Verifica somente presença e formato básico; não confirma autenticação com Melhor Envio.'
   });
