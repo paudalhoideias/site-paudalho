@@ -24,7 +24,7 @@ export default async function handler(req, res) {
   const token = process.env.MELHOR_ENVIO_SANDBOX_ACCESS_TOKEN;
   const box = packageData();
   if (!validCep(origin) || !validCep(destination)) return res.status(400).json({ error: 'CEP inválido ou origem não configurada.' });
-  if (!token || !box) return res.status(503).json({ error: 'Integração ou embalagem ainda não configurada.' });
+  if (!token || !box || !process.env.MELHOR_ENVIO_CONTACT_EMAIL) return res.status(503).json({ error: 'Integração ou embalagem ainda não configurada.' });
   try {
     const api = await fetch('https://sandbox.melhorenvio.com.br/api/v2/me/shipment/calculate', {
       method: 'POST',
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
         'Authorization': 'Bearer ' + token,
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'User-Agent': 'Pau DAlho (integracao@paudalhoideias.com.br)'
+        'User-Agent': 'Pau DAlho (' + process.env.MELHOR_ENVIO_CONTACT_EMAIL + ')'
       },
       body: JSON.stringify({
         from: { postal_code: normalize(origin) },
