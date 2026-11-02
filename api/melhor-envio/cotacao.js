@@ -4,16 +4,14 @@
 const validCep = value => typeof value === 'string' && /^[0-9]{8}$/.test(value.replace(/-/g, ''));
 const normalize = value => value.replace(/-/g, '');
 function packageData() {
-  const numbers = ['LENGTH_CM', 'WIDTH_CM', 'HEIGHT_CM', 'WEIGHT_KG'].map(k => Number(process.env['TORRE_3EM1_BOX_' + k]));
-  if (numbers.some(n => !Number.isFinite(n) || n <= 0)) return null;
-  const [length, width, height, weight] = numbers;
-  if (length > 200 || width > 200 || height > 200 || weight > 100) return null;
-  return { length, width, height, weight };
+  // Torre 3 em 1: embalagem fechada, um único volume.
+  return { length: 65, width: 45, height: 16, weight: 9 };
 }
+
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
-  if (process.env.VERCEL_ENV !== 'preview') return res.status(404).end();
+  if (process.env.VERCEL_ENV !== 'preview' || process.env.VERCEL_GIT_COMMIT_REF !== 'revisao-home-etapa-1-2026-10') return res.status(404).end();
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).end(); }
   // Desabilitado até a integração OAuth e os dados de embalagem serem validados.
   if (process.env.MELHOR_ENVIO_QUOTE_ENABLED !== 'true') {
