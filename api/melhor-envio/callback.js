@@ -1,17 +1,19 @@
-// Etapa 1: retorno seguro, sem troca ou armazenamento de tokens.
-// Antes da autenticação real, implementar criação e validação de state no servidor.
+// Ponte fixa: recebe o retorno cadastrado no Melhor Envio e encaminha ao Preview.
+// Não utiliza Client Secret nem processa tokens em produção.
+const preview = 'https://site-paudalho-git-r-6037e1-fabricio-oliveiras-projects-d0e317d9.vercel.app';
 export default function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('Referrer-Policy', 'no-referrer');
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
-  res.setHeader('Content-Type', 'text/html; charset=utf-8');
-  if (req.method !== 'GET') {
-    res.setHeader('Allow', 'GET');
-    return res.status(405).end('Método não permitido');
+  if (req.method !== 'GET') { res.setHeader('Allow', 'GET'); return res.status(405).end(); }
+  const allowed = ['code', 'state', 'error', 'error_description'];
+  const target = new URL('/api/melhor-envio/callback', preview);
+  for (const name of allowed) {
+    const value = req.query[name];
+    if (typeof value === 'string' && value.length <= 4096) target.searchParams.set(name, value);
   }
-  if (req.query.code || req.query.state || req.query.error) {
-    // Não registrar nem exibir parâmetros sensíveis em logs ou HTML.
-    return res.status(403).end('<!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>Integração em preparação</title><p>Autorização ainda não habilitada. Nenhuma credencial foi armazenada.</p></html>');
-  }
-  return res.status(200).end('<!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>Pau D\'Alho · Integração de frete</title><p>Rota de integração de frete disponível para testes técnicos. A autorização ainda não está habilitada.</p></html>');
+  if (!target.searchParams.has('state')) return res.status(400).end('Fluxo OAuth não iniciado.');
+  res.statusCode = 302;
+  res.setHeader('Location', target.toString());
+  return res.end();
 }
