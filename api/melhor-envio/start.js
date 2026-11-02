@@ -6,10 +6,8 @@ export default function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('Referrer-Policy', 'no-referrer');
   res.setHeader('X-Robots-Tag', 'noindex');
-  if (process.env.VERCEL_ENV !== 'preview') return res.status(404).end();
+  if (process.env.VERCEL_ENV !== 'preview' || process.env.VERCEL_GIT_COMMIT_REF !== 'revisao-home-etapa-1-2026-10') return res.status(404).end();
   if (req.method !== 'GET') return res.status(405).end();
-  // Ainda desativado enquanto não houver troca e guarda segura dos tokens.
-  if (process.env.MELHOR_ENVIO_OAUTH_ENABLED !== 'true') return res.status(503).json({ status: 'preparando-autorizacao', mensagem: 'Autorização ainda não ativada.' });
   const id = process.env.MELHOR_ENVIO_CLIENT_ID;
   const secret = process.env.MELHOR_ENVIO_CLIENT_SECRET;
   if (!id || !secret) return res.status(503).end();
