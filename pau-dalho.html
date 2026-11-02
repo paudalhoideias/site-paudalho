@@ -43,6 +43,17 @@
 .sobre-caminhos-links a:hover, .sobre-caminhos-links a:focus-visible { border-color: #607c58; background: #f0f4eb; }
 @media(max-width:600px) { .sobre-caminhos-links { align-items: stretch; flex-direction: column; } .sobre-caminhos-links a { justify-content: space-between; } }
 </style>
+<style>
+/* Família: seção afetiva e leve, sem repetir a narrativa anterior */
+.sobre-familia { background: #f7f3eb; padding: 56px 20px; }
+.sobre-familia-conteudo { max-width: 1080px; margin: auto; display: grid; grid-template-columns: 0.9fr 1.1fr; align-items: center; gap: 42px; }
+.sobre-familia-etiqueta { color: #56764d; font-weight: 700; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; }
+.sobre-familia-texto h2 { font-size: clamp(27px, 3vw, 38px); line-height: 1.2; color: #3c3329; margin: 12px 0 18px; }
+.sobre-familia-texto p:last-child { line-height: 1.75; color: #554d44; font-size: 17px; }
+.sobre-familia-foto { margin: 0; min-width: 0; }
+.sobre-familia-foto img { display: block; width: 100%; height: auto; border-radius: 16px; }
+@media(max-width: 750px) { .sobre-familia { padding: 42px 20px; } .sobre-familia-conteudo { grid-template-columns: 1fr; gap: 20px; } }
+</style>
 </head>
 
 <body>
@@ -116,6 +127,19 @@
 </div>
 
 </div>
+</section>
+
+<section class="sobre-familia" aria-labelledby="sobre-familia-titulo">
+  <div class="sobre-familia-conteudo">
+    <div class="sobre-familia-texto">
+      <p class="sobre-familia-etiqueta">Quem está por trás da Pau D'Alho</p>
+      <h2 id="sobre-familia-titulo">Uma história construída em família</h2>
+      <p>A Pau D'Alho nasceu de uma escolha por mais presença e tempo juntos. É a nossa vivência como família que inspira a criação de móveis e brinquedos pensados para fazer parte das descobertas de outras crianças.</p>
+    </div>
+    <figure class="sobre-familia-foto">
+      <img src="assets/images/familia-pau-dalho.webp" alt="Fabricio, Roberta e Júlia juntos em uma fotografia de família" loading="lazy" width="1100" height="825">
+    </figure>
+  </div>
 </section>
 
 <section class="secao sobre-caminhos">
