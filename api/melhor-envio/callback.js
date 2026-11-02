@@ -14,10 +14,9 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('Referrer-Policy', 'no-referrer');
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
-  if (process.env.VERCEL_ENV !== 'preview') return res.status(404).end();
+  if (process.env.VERCEL_ENV !== 'preview' || process.env.VERCEL_GIT_COMMIT_REF !== 'revisao-home-etapa-1-2026-10') return res.status(404).end();
   if (req.method !== 'GET') { res.setHeader('Allow', 'GET'); return res.status(405).end(); }
   res.setHeader('Set-Cookie', 'me_oauth_state=; HttpOnly; Secure; SameSite=Lax; Path=/api/melhor-envio; Max-Age=0');
-  if (process.env.MELHOR_ENVIO_OAUTH_ENABLED !== 'true') return res.status(503).end('Autorização ainda não habilitada.');
   const cookies = Object.fromEntries((req.headers.cookie || '').split(';').map(x => x.trim().split('=').map(decodeURIComponent)).filter(x => x.length === 2));
   if (!validState(req.query.state, cookies.me_oauth_state, process.env.MELHOR_ENVIO_CLIENT_SECRET)) return res.status(403).end('Autorização não reconhecida ou expirada.');
   if (req.query.error) return res.status(400).end('Autorização recusada.');
