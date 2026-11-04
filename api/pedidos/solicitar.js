@@ -1,7 +1,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { accessToken, previewAllowed, quoteAllowed, redis, adminAllowed } from '../../lib/melhor-envio/tokens.js';
-import { orderId, storeOrder, listOrders } from '../../lib/pedidos/store.js';
+import { orderId, storeOrder, listOrders, updateTestOrderStatus } from '../../lib/pedidos/store.js';
 const cores=new Set(['azul','amarelo','preto','branco','rosa','vermelho']);
 const fitas=new Set(['sem','azul','amarelo','preto','branco','verde','rosa']);
 const ufs=new Set('AC AL AP AM BA CE DF ES GO MA MT MS MG PA PB PR PE PI RJ RN RS RO RR SC SP SE TO'.split(' '));
@@ -38,7 +38,19 @@ export default async function handler(req,res){
   catch{return res.status(503).json({error:'Consulta de pedidos temporariamente indisponível.'});}
  }
  if(req.method!=='POST'){res.setHeader('Allow','GET, POST');return res.status(405).end();}
+
  if(!sameOrigin(req))return res.status(403).json({error:'Origem não autorizada.'});
+ if(req.body?.acao==='confirmar-pix-teste'){
+  if(!adminAllowed(req,res))return;
+  const numero=req.body?.numero;
+  if(typeof numero!=='string')return res.status(400).json({error:'Número do pedido inválido.'});
+  try{
+   const updated=await updateTestOrderStatus(numero,'PAGAMENTO_CONFERIDO_TESTE');
+   if(!updated.found)return res.status(404).json({error:'Pedido de teste não encontrado.'});
+   return res.status(200).json({numero,ambiente:'preview',situacao:updated.order.pagamento.situacao,confirmado_em_teste:updated.order.pagamento.confirmado_em_teste,producao_liberada:false});
+  }catch{return res.status(409).json({error:'Não foi possível atualizar a situação do pedido de teste.'});}
+ }
+
  const b=req.body||{},d=b.entrega||{},p=b.comprador||{},cfg=b.configuracao||{},f=b.frete||{};
  const nome=text(p.nome,120),email=text(p.email,200),telefone=text(p.telefone,25);
  const rua=text(d.rua,150),numero=text(d.numero,15),bairro=text(d.bairro,90),cidade=text(d.cidade,90),uf=text(d.uf,2),cep=typeof d.cep==='string'?d.cep.replace(/\D/g,''):null;
