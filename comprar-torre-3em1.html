@@ -65,9 +65,9 @@ function validarEtapaEntrega(){
  const v=id=>document.getElementById(id).value.trim();
  const obrigatorios=[['cliente-nome','nome'],['cliente-email','e-mail'],['cliente-telefone','telefone'],['rua','rua'],['numero','número'],['bairro','bairro'],['cidade','cidade'],['uf','estado']];
  let primeiro=null;
- for(const [id,nome] of obrigatorios){if(!v(id))primeiro=marcarErro(id,'Informe '+(nome==='rua'?'a ':'o ')+nome+'.')||primeiro;}
- if(v('cliente-email')&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('cliente-email')))primeiro=marcarErro('cliente-email','Informe um e-mail válido.')||primeiro;
- if(!/^\d{8}$/.test(v('cep').replace(/\D/g,'')))primeiro=marcarErro('cep','Informe um CEP válido com 8 números.')||primeiro;
+ for(const [id,nome] of obrigatorios){if(!v(id)){const campo=marcarErro(id,'Informe '+(nome==='rua'?'a ':'o ')+nome+'.');if(!primeiro)primeiro=campo;}}
+ if(v('cliente-email')&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v('cliente-email'))){const campo=marcarErro('cliente-email','Informe um e-mail válido.');if(!primeiro)primeiro=campo;}
+ if(!/^\d{8}$/.test(v('cep').replace(/\D/g,''))){const campo=marcarErro('cep','Informe um CEP válido com 8 números.');if(!primeiro)primeiro=campo;}
  if(freteEscolhido===null||!servicoEscolhido){const aviso=document.getElementById('estado');aviso.textContent='Selecione uma transportadora para continuar.';aviso.classList.add('aviso-erro');if(!primeiro)primeiro=document.getElementById('cotar');}
  if(primeiro){
   etapaAviso.textContent='Confira os campos destacados abaixo.';
