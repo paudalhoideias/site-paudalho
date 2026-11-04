@@ -253,7 +253,21 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
      caixa.replaceChildren();
      caixa.append(criar('h3','','Número do pedido: '+data.numero));
      caixa.append(criar('p','','Total conferido: '+moeda(data.total_centavos/100)));
-     caixa.append(criar('p','','Situação: TESTE registrado, sem pagamento iniciado.'));
+     caixa.append(criar('p','','Situação: pedido de teste recebido. Pix ainda não iniciado.'));
+     const avisoPix=criar('div','resumo-informacao');
+     avisoPix.append(criar('strong','','Como será o pagamento Pix na loja'));
+     avisoPix.append(criar('p','','Banco Inter PJ · chave Pix do tipo CNPJ.'));
+     avisoPix.append(criar('p','','Após finalizar um pedido real, o cliente verá o valor exato e a chave Pix da Pau D’Alho, com opção de copiar.'));
+     avisoPix.append(criar('p','','A produção só será autorizada após a conferência do crédito no extrato do Inter.'));
+     avisoPix.append(criar('p','resumo-alerta','AMBIENTE DE TESTE: chave Pix real não exibida. Não faça transferências referentes a este pedido fictício.'));
+     caixa.append(avisoPix);
+     const copiarNumero=criar('button','','Copiar número do pedido');
+     copiarNumero.type='button';
+     copiarNumero.addEventListener('click',async()=>{
+      try{await navigator.clipboard.writeText(data.numero);copiarNumero.textContent='Número copiado';}
+      catch{copiarNumero.textContent='Número: '+data.numero;}
+     });
+     caixa.append(copiarNumero);
      mudarEtapa(4);
      teste.textContent='Pedido de teste registrado';
     }catch(e){if(versao!==resumoVersao)return;resposta.textContent=e.message;teste.disabled=false;}
