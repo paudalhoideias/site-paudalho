@@ -1,59 +1,33 @@
-import { createHash, createDecipheriv } from 'node:crypto';
-// Cotação experimental: jamais disponível em produção.
-// Dimensões e peso são definidos no servidor, não pelo comprador.
-// Requer token OAuth de Sandbox válido em variável protegida.
-const validCep = value => typeof value === 'string' && /^[0-9]{8}$/.test(value.replace(/-/g, ''));
-const normalize = value => value.replace(/-/g, '');
-function packageData() {
-  // Torre 3 em 1: embalagem fechada, um único volume.
-  return { length: 65, width: 45, height: 16, weight: 9 };
-}
+import { accessToken, previewAllowed, quoteAllowed } from '../../lib/melhor-envio/tokens.js';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
   res.setHeader('X-Robots-Tag', 'noindex, nofollow');
-  if (process.env.VERCEL_ENV !== 'preview' || process.env.VERCEL_GIT_COMMIT_REF !== 'revisao-home-etapa-1-2026-10') return res.status(404).end();
+  if (!previewAllowed()) return res.status(404).end();
   if (req.method !== 'POST') { res.setHeader('Allow', 'POST'); return res.status(405).end(); }
-  const { destination_cep: destination } = req.body || {};
-  const origin = '08790200';
-  let token;
+  const destination = req.body?.destination_cep;
+  if (typeof destination !== 'string' || !/^\d{5}-?\d{3}$/.test(destination)) return res.status(400).json({ error: 'Informe um CEP válido com 8 números.' });
   try {
-    const session = (req.headers.cookie || '').split(';').map(v => v.trim()).find(v => v.startsWith('me_sandbox_session='));
-    if (!session) return res.status(401).json({ error: 'Abra a autorização do Sandbox neste navegador antes de cotar.' });
-    const raw = Buffer.from(session.slice('me_sandbox_session='.length), 'base64url');
-    if (raw.length < 29) throw new Error('invalid session');
-    const key = createHash('sha256').update(process.env.MELHOR_ENVIO_CLIENT_SECRET || '').digest();
-    const decipher = createDecipheriv('aes-256-gcm', key, raw.subarray(0, 12));
-    decipher.setAuthTag(raw.subarray(12, 28));
-    const sessionData = JSON.parse(Buffer.concat([decipher.update(raw.subarray(28)), decipher.final()]).toString('utf8'));
-    if (Date.now() >= Number(sessionData.expires_at)) return res.status(401).json({ error: 'Sessão expirada, autorize novamente no Sandbox.' });
-    token = sessionData.access_token;
-  } catch { return res.status(401).json({ error: 'Sessão de autenticação inválida.' }); }
-  const box = packageData();
-  if (!validCep(origin) || !validCep(destination)) return res.status(400).json({ error: 'CEP inválido ou origem não configurada.' });
-  if (!token || !box) return res.status(503).json({ error: 'Integração ou embalagem ainda não configurada.' });
-  try {
-    const api = await fetch('https://sandbox.melhorenvio.com.br/api/v2/me/shipment/calculate', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'User-Agent': 'Pau DAlho (paudalhoideias@gmail.com)'
-      },
-      body: JSON.stringify({
-        from: { postal_code: normalize(origin) },
-        to: { postal_code: normalize(destination) },
-        package: box
-      }),
-      signal: AbortSignal.timeout(10000)
+    if (!await quoteAllowed()) { res.setHeader('Retry-After', '60'); return res.status(429).json({ error: 'Muitas consultas. Aguarde um minuto e tente novamente.' }); }
+    let token = await accessToken();
+    const calculate = () => fetch('https://melhorenvio.com.br/api/v2/me/shipment/calculate', {
+      method: 'POST', headers: { Authorization: 'Bearer ' + token, Accept: 'application/json', 'Content-Type': 'application/json', 'User-Agent': 'Pau DAlho (paudalhoideias@gmail.com)' },
+      body: JSON.stringify({ from: { postal_code: '08790200' }, to: { postal_code: destination.replace('-', '') }, package: { length: 65, width: 45, height: 16, weight: 9 } }),
+      signal: AbortSignal.timeout(10000), redirect: 'error'
     });
-    if (!api.ok) return res.status(502).json({ error: 'Não foi possível cotar o frete de teste.', upstream_status: api.status });
+    let api = await calculate();
+    if (api.status === 401) { token = await accessToken(token); api = await calculate(); }
+    if (!api.ok) return res.status(502).json({ error: 'Não foi possível consultar o frete. Tente novamente mais tarde.' });
     const data = await api.json();
-    if (!Array.isArray(data)) return res.status(502).json({ error: 'Resposta inesperada do serviço de frete.' });
-    return res.status(200).json({ ambiente: 'sandbox', servicos: data.filter(x => x && !x.error).map(x => ({
-      nome: String(x.name || ''), transportadora: String(x.company?.name || ''),
-      preco: x.custom_price || x.price || null, prazo_dias: x.custom_delivery_time || x.delivery_time || null
-    })) });
-  } catch (_) { return res.status(502).json({ error: 'Falha de comunicação com o serviço de frete.' }); }
+    if (!Array.isArray(data)) throw Error('invalid response');
+    const servicos = data.filter(x => x && !x.error).flatMap(x => {
+      const price = x.custom_price ?? x.price;
+      const days = x.custom_delivery_time ?? x.delivery_time;
+      if (!['string', 'number'].includes(typeof price) || String(price).trim() === '' || !Number.isFinite(Number(price)) || Number(price) < 0 || !['string', 'number'].includes(typeof days) || String(days).trim() === '' || !Number.isFinite(Number(days)) || Number(days) < 0) return [];
+      return [{ nome: String(x.name || ''), transportadora: String(x.company?.name || ''), preco: Number(price), prazo_dias: Number(days) }];
+    });
+    return res.status(200).json({ ambiente: 'producao', servicos });
+  } catch {
+    return res.status(503).json({ error: 'Consulta de frete temporariamente indisponível. Tente novamente mais tarde.' });
+  }
 }

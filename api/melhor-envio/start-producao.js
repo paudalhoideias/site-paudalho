@@ -1,9 +1,12 @@
+import { adminAllowed, configured } from '../../lib/melhor-envio/tokens.js';
 import { randomBytes, createHmac } from 'node:crypto';
 const callback='https://www.paudalhoideias.com.br/api/melhor-envio/callback';
 export default function handler(req,res){
  res.setHeader('Cache-Control','no-store');res.setHeader('Referrer-Policy','no-referrer');res.setHeader('X-Robots-Tag','noindex,nofollow');
  if(process.env.VERCEL_ENV!=='preview'||process.env.VERCEL_GIT_COMMIT_REF!=='revisao-home-etapa-1-2026-10')return res.status(404).end();
  if(req.method!=='GET')return res.status(405).end();
+ if(!adminAllowed(req,res))return;
+ if(!configured())return res.status(503).end('Armazenamento seguro não configurado.');
  const id=process.env.MELHOR_ENVIO_PROD_CLIENT_ID,secret=process.env.MELHOR_ENVIO_PROD_CLIENT_SECRET;
  if(!id||!secret)return res.status(503).end('Credenciais de producao nao configuradas.');
  const payload='prod.'+Date.now()+'.'+randomBytes(24).toString('hex');

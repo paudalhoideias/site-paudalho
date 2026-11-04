@@ -1,3 +1,4 @@
+import { configured, saveTokens, tokenData } from '../../lib/melhor-envio/tokens.js';
 import { createHmac, timingSafeEqual, createHash, createCipheriv, randomBytes } from 'node:crypto';
 function validState(value, cookie, secret) {
   if (!value || !cookie || !secret || value !== cookie) return false;
@@ -22,12 +23,12 @@ export default async function handler(req, res) {
   const secret = prod ? process.env.MELHOR_ENVIO_PROD_CLIENT_SECRET : process.env.MELHOR_ENVIO_CLIENT_SECRET;
   const id = prod ? process.env.MELHOR_ENVIO_PROD_CLIENT_ID : process.env.MELHOR_ENVIO_CLIENT_ID;
   res.setHeader('Set-Cookie', stateCookie + '=; HttpOnly; Secure; SameSite=Lax; Path=/api/melhor-envio; Max-Age=0');
-  const cookies = Object.fromEntries((req.headers.cookie || '').split(';').map(x => x.trim().split('=').map(decodeURIComponent)).filter(x => x.length === 2));
+  let cookies;
+  try { cookies = Object.fromEntries((req.headers.cookie || '').split(';').map(x => x.trim().split('=').map(decodeURIComponent)).filter(x => x.length === 2)); } catch { return res.status(403).end('Autorização inválida.'); }
   if (!validState(req.query.state, cookies[stateCookie], secret)) return res.status(403).end('Autorização não reconhecida ou expirada.');
   if (req.query.error) return res.status(400).end('Autorização recusada.');
   if (typeof req.query.code !== 'string' || !req.query.code) return res.status(400).end('Código de autorização ausente.');
-  // Sessão criptografada apenas para testes neste navegador. Não é armazenamento
-  // persistente adequado para o checkout de uma loja.
+  if (prod && !configured()) return res.status(503).end('Armazenamento seguro não configurado.');
   if (!id || !secret) return res.status(503).end('Credenciais não configuradas.');
   try {
     const tokenResponse = await fetch(prod ? 'https://melhorenvio.com.br/oauth/token' : 'https://sandbox.melhorenvio.com.br/oauth/token', {
@@ -39,12 +40,17 @@ export default async function handler(req, res) {
         redirect_uri: 'https://www.paudalhoideias.com.br/api/melhor-envio/callback',
         code: req.query.code
       }),
-      signal: AbortSignal.timeout(10000)
+      signal: AbortSignal.timeout(10000), redirect: 'error'
     });
     if (!tokenResponse.ok) return res.status(502).end('A autorização foi reconhecida, mas o serviço recusou a troca do código.');
     const tokens = await tokenResponse.json();
     if (typeof tokens.access_token !== 'string' || typeof tokens.refresh_token !== 'string') {
       return res.status(502).end('Resposta de token incompleta.');
+    }
+    if (prod) {
+      await saveTokens(tokenData(tokens));
+      res.setHeader('Set-Cookie', [stateCookie + '=; HttpOnly; Secure; SameSite=Lax; Path=/api/melhor-envio; Max-Age=0', 'me_prod_session=; HttpOnly; Secure; SameSite=Lax; Path=/api/melhor-envio; Max-Age=0']);
+      return res.status(200).end('Melhor Envio conectado ao servidor. Consulta disponível sem sessão do proprietário.');
     }
     const key = createHash('sha256').update(secret).digest();
     const iv = randomBytes(12);
@@ -60,6 +66,6 @@ export default async function handler(req, res) {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     return res.status(200).end('<!doctype html><html lang="pt-BR"><meta charset="utf-8"><title>Melhor Envio conectado</title><p>Autorização de consulta concluída neste navegador. Nenhuma compra ou etiqueta foi gerada.</p></html>');
   } catch {
-    return res.status(502).end('Erro de comunicação ao solicitar token de teste.');
+    return res.status(502).end('Não foi possível concluir a autorização e salvar a conexão. Tente novamente pela aplicação existente.');
   }
 }

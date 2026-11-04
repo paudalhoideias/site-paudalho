@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/melhor-envio/cotacao.js": { "maxDuration": 60 },
+    "api/melhor-envio/callback.js": { "maxDuration": 60 },
+    "api/melhor-envio/sessao-producao.js": { "maxDuration": 60 }
+  }
+}
