@@ -110,7 +110,7 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
       configuracao:{fita:fita.value,revestimento:revestimento.value,lousa:lousa.value},
       frete:{nome:servicoEscolhido.nome,transportadora:servicoEscolhido.transportadora,preco_centavos:Math.round(freteEscolhido*100)}
      };
-     const response=await fetch('/api/pedidos/registrar-teste',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(cadastro)});
+     const response=await fetch('/api/pedidos/solicitar',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify(cadastro)});
      const data=await response.json();
      if(versao!==resumoVersao)return;
      if(!response.ok)throw Error(data.error||'Falha ao registrar o pedido de teste.');
