@@ -3,6 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { accessToken, previewAllowed, quoteAllowed, redis, adminAllowed } from '../../lib/melhor-envio/tokens.js';
 import { orderId, storeOrder, listOrders, updateTestOrderStatus } from '../../lib/pedidos/store.js';
 import { enviarEmail, resendConfigurado, DESTINO_LOJA } from '../../lib/pedidos/email.js';
+import { notificarPedidoTeste, statusNotificacoes } from '../../lib/pedidos/notificacoes.js';
 // O painel de teste envia apenas após clique explícito do administrador.
 const ADMIN_HTML="<!doctype html><html lang=\"pt-BR\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><title>Pedidos de teste | Pau D'Alho</title><style>body{font:16px system-ui,sans-serif;margin:0;background:#f4f6f2;color:#243028}.wrap{max-width:850px;margin:28px auto;padding:16px}h1{font-size:27px}p{line-height:1.55}.aviso{background:#fff2d8;padding:14px;border-radius:10px;margin-bottom:18px}.pedido{background:white;border:1px solid #dce3d9;border-radius:12px;padding:20px;margin:14px 0}.pedido h2{font-size:18px;margin:0 0 10px}.linha{margin:6px 0}.btn{background:#34673c;color:white;border:0;padding:11px 15px;border-radius:8px;margin-top:12px;cursor:pointer}.btn:disabled{opacity:.5;cursor:default}.status{font-weight:700}.erro{color:#9a2a20}</style></head><body><main class=\"wrap\"><h1>Pedidos da Pau D'Alho — testes</h1><p class=\"aviso\"><strong>Ambiente de teste.</strong> Nenhum pagamento é processado neste painel. Marcar Pix como conferido é uma simulação e <strong>não libera produção</strong>. Os registros expiram em 7 dias.</p><section class=\"pedido\"><h2>Notificação por e-mail</h2><p>Envie apenas uma mensagem de teste para o e-mail comercial da Pau D'Alho. Isso não gera pedido nem cobrança.</p><button class=\"btn\" id=\"email-teste\" type=\"button\">Enviar e-mail de teste</button><p id=\"email-estado\" role=\"status\"></p></section><p id=\"estado\" role=\"status\">Carregando pedidos...</p><section id=\"pedidos\"></section></main><script>\nconst root=document.getElementById('pedidos'),estado=document.getElementById('estado');\nconst moeda=c=>(c/100).toLocaleString('pt-BR',{style:'currency',currency:'BRL'});\nfunction el(tag,content,klass){const a=document.createElement(tag);if(content!==undefined)a.textContent=content;if(klass)a.className=klass;return a;}\nfunction item(bloco,nome,valor){bloco.append(el('p',nome+': '+valor,'linha'))}\nasync function carregar(){\n try{\n  const r=await fetch('/api/pedidos/solicitar',{credentials:'same-origin',cache:'no-store'}),dados=await r.json();\n  if(!r.ok)throw Error('Consulta administrativa indisponível.');\n  root.replaceChildren();\n  estado.textContent=dados.quantidade+' pedido(s) de teste encontrado(s).';\n  for(const p of dados.pedidos){\n   const card=el('article',undefined,'pedido');card.append(el('h2',p.numero));\n   item(card,'Cliente',p.comprador.nome);\n   item(card,'Produto',p.produto+' | fita: '+p.configuracao.fita+' | revestimento: '+p.configuracao.revestimento+' | lousa: '+p.configuracao.lousa);\n   item(card,'Entrega',p.entrega.rua+', '+p.entrega.numero+' — '+p.entrega.cidade+'/'+p.entrega.uf+' — CEP '+p.entrega.cep);\n   item(card,'Frete',p.frete.transportadora+' '+p.frete.nome+' — '+moeda(p.valores.frete_centavos));\n   item(card,'Valor total',moeda(p.valores.total_centavos));\n   const conf=p.pagamento.situacao==='PAGAMENTO_CONFERIDO_TESTE';\n   card.append(el('p',conf?'Pix marcado como conferido NA SIMULAÇÃO':'Pix ainda não conferido NA SIMULAÇÃO','status'));\n   if(!conf){\n    const btn=el('button','Simular conferência do Pix','btn');btn.type='button';\n    const msg=el('p','');\n    btn.onclick=async()=>{\n     if(!confirm('Marcar o pedido '+p.numero+' como Pix conferido apenas no ambiente de TESTE? Isso não representa pagamento real.'))return;\n     btn.disabled=true;msg.textContent='Atualizando...';\n     try{\n      const resp=await fetch('/api/pedidos/solicitar',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'confirmar-pix-teste',numero:p.numero})});\n      const d=await resp.json();if(!resp.ok)throw Error(d.error||'Falha na confirmação');\n      await carregar();\n     }catch(e){msg.textContent=e.message;msg.className='erro';btn.disabled=false;}\n    };\n    card.append(btn,msg);\n   }\n   root.append(card);\n  }\n }catch(e){estado.textContent=e.message;estado.className='erro'}\n}\ndocument.getElementById('email-teste').addEventListener('click',async()=>{\n const botao=document.getElementById('email-teste'),status=document.getElementById('email-estado');\n botao.disabled=true;status.textContent='Enviando teste...';\n try{\n  const resp=await fetch('/api/pedidos/solicitar',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({acao:'enviar-email-teste'})});\n  const dados=await resp.json();if(!resp.ok)throw Error(dados.error||'Falha no envio.');\n  status.textContent='O Resend aceitou a mensagem para '+dados.destinatario+'. Verifique a caixa de entrada (e spam). Identificador: '+dados.resend_id;\n }catch(e){status.textContent=e.message;botao.disabled=false;}\n});\ncarregar();\n</script></body></html>";
 const cores=new Set(['azul','amarelo','preto','branco','rosa','vermelho']);
@@ -42,7 +43,11 @@ export default async function handler(req,res){
    res.setHeader('Content-Security-Policy',"default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self'; base-uri 'none'; frame-ancestors 'none'");
    return res.status(200).end(ADMIN_HTML);
   }
-  try{const pedidos=await listOrders();return res.status(200).json({ambiente:'preview',aviso:'Pedidos de teste, sem cobrança. Registros expiram em 7 dias.',quantidade:pedidos.length,pedidos});}
+  try{
+   const pedidos=await listOrders();
+   const enriquecidos=await Promise.all(pedidos.map(async p=>({...p,notificacoes:await statusNotificacoes(p.numero).catch(()=>({indisponivel:true}))})));
+   return res.status(200).json({ambiente:'preview',aviso:'Pedidos de teste, sem cobrança. E-mails de simulação enviados somente à loja. Registros expiram em 7 dias.',quantidade:pedidos.length,pedidos:enriquecidos});
+  }
   catch{return res.status(503).json({error:'Consulta de pedidos temporariamente indisponível.'});}
  }
  if(req.method!=='POST'){res.setHeader('Allow','GET, POST');return res.status(405).end();}
@@ -70,7 +75,10 @@ export default async function handler(req,res){
   try{
    const updated=await updateTestOrderStatus(numero,'PAGAMENTO_CONFERIDO_TESTE');
    if(!updated.found)return res.status(404).json({error:'Pedido de teste não encontrado.'});
-   return res.status(200).json({numero,ambiente:'preview',situacao:updated.order.pagamento.situacao,confirmado_em_teste:updated.order.pagamento.confirmado_em_teste,producao_liberada:false});
+   let notificacoes={};
+   try{notificacoes=await notificarPedidoTeste(updated.order,'pagamento');}
+   catch{notificacoes={indisponivel:true};}
+   return res.status(200).json({numero,ambiente:'preview',situacao:updated.order.pagamento.situacao,confirmado_em_teste:updated.order.pagamento.confirmado_em_teste,producao_liberada:false,notificacoes:notificacoes.pagamento?.situacao||'indisponivel'});
   }catch{return res.status(409).json({error:'Não foi possível atualizar a situação do pedido de teste.'});}
  }
 
@@ -100,7 +108,10 @@ export default async function handler(req,res){
   };
   const saved=await storeOrder(pedido,b.idempotencia);
   if(saved.duplicate)return res.status(409).json({error:'Esta tentativa já foi recebida. Não envie novamente.',numero:saved.numero});
-  return res.status(201).json({numero:pedido.numero,ambiente:'preview',status:pedido.status,total_centavos:pedido.valores.total_centavos,frete_centavos:selected.centavos,registro_temporario:true,pagamento_iniciado:false,mensagem:'Pedido de TESTE registrado. Nenhum Pix foi gerado e nenhuma produção deve ser iniciada.'});
+  let notificacoes={};
+  try{notificacoes=await notificarPedidoTeste(pedido,'recebido');}
+  catch{notificacoes={indisponivel:true};}
+  return res.status(201).json({numero:pedido.numero,ambiente:'preview',status:pedido.status,total_centavos:pedido.valores.total_centavos,frete_centavos:selected.centavos,registro_temporario:true,pagamento_iniciado:false,notificacoes:notificacoes.recebido?.situacao||'indisponivel',mensagem:'Pedido de TESTE registrado. E-mails de simulação somente para a loja. Nenhum Pix gerado; produção não autorizada.'});
  }catch{
   return res.status(503).json({error:'Não foi possível registrar o pedido de teste. Nenhuma cobrança foi realizada.'});
  }
