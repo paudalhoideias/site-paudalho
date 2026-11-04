@@ -30,10 +30,10 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
  const v=id=>document.getElementById(id).value.trim();
  const nome=v('cliente-nome'),email=v('cliente-email'),telefone=v('cliente-telefone');
  const rua=v('rua'),numero=v('numero'),complemento=v('complemento'),bairro=v('bairro'),cidade=v('cidade'),uf=v('uf');
- const cep=v('cep').replace(/\\D/g,'');
+ const cep=v('cep').replace(/\D/g,'');
  const out=document.getElementById('pedido-resultado');
  out.replaceChildren();out.hidden=false;
- if(!nome||!email||!telefone||!rua||!numero||!bairro||!cidade||!uf||cep.length!==8||!(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/).test(email)||freteEscolhido===null||!servicoEscolhido){
+ if(!nome||!email||!telefone||!rua||!numero||!bairro||!cidade||!uf||cep.length!==8||!(/^[^\s@]+@[^\s@]+\.[^\s@]+$/).test(email)||freteEscolhido===null||!servicoEscolhido){
   out.append(criar('p','resumo-erro','Preencha os dados do comprador, o endereço e selecione uma opção de frete antes de revisar sua compra.'));return;
  }
  out.append(criar('p','compra-sub','Conferindo a configuração do produto...'));
