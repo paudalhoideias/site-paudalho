@@ -47,7 +47,7 @@ export default async function handler(req,res){
   if(!await quoteAllowed())return res.status(429).json({error:'Consultas de frete temporariamente limitadas.'});
   const servicos=await cotar(cep);
   const selected=servicos.find(x=>x.nome===f.nome&&x.transportadora===f.transportadora);
-  if(!selected)return res.status(409).json({error:'A opção de frete mudou. Calcule o frete novamente antes de registrar o pedido.'});
+  if(!selected||!Number.isSafeInteger(f.preco_centavos)||selected.centavos!==f.preco_centavos)return res.status(409).json({error:'O valor ou a disponibilidade do frete mudou. Calcule novamente e revise o total antes de registrar.'});
   const preco=33000+(revestimento==='nao'?0:5000)+(lousa==='sim'?4000:0);
   const pedido={
    numero:orderId(),criado_em:new Date().toISOString(),ambiente:'preview',status:'TESTE_SEM_COBRANCA',
