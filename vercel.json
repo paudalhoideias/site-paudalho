@@ -9,7 +9,7 @@
     "api/melhor-envio/sessao-producao.js": {
       "maxDuration": 60
     },
-    "api/pedidos/registrar-teste.js": {
+    "api/pedidos/solicitar.js": {
       "maxDuration": 60
     }
   }
