@@ -20,9 +20,9 @@
 <div class="compra-etapa" id="etapa-3" hidden>
 <h2>Revisão e pagamento</h2>
 <p class="compra-sub">Confira as escolhas antes de registrar o pedido de teste.</p>
-<label for="metodo">Forma de pagamento desejada</label><select id="metodo"><option value="pix">Pix pelo Banco Inter (conferência manual)</option><option value="cartao">Cartão pelo Mercado Pago (em integração)</option></select>
+<label for="metodo">Forma de pagamento desejada</label><select id="metodo"><option value="pix">Pix pelo Banco Inter (conferência manual)</option><option value="cartao">Cartão pelo Mercado Pago — demonstração (sem cobrança)</option></select>
 <button type="button" id="simular-pedido">Atualizar resumo</button><div id="pedido-resultado" class="resumo-compra" aria-live="polite" hidden></div>
-<p class="compra-sub">O registro de TESTE armazena temporariamente os dados por até 7 dias e não envia e-mail, não gera Pix ou cobrança e não libera fabricação. No Pix real, somente o crédito confirmado no extrato poderá autorizar a produção.</p>
+<p class="compra-sub">O registro de TESTE armazena temporariamente os dados por até 7 dias e envia apenas e-mails de simulação à loja. Não gera Pix, cobrança ou autorização de fabricação. No Pix real, somente o crédito confirmado no extrato poderá autorizar a produção.</p>
 <div class="compra-navegacao"><button type="button" class="compra-voltar" data-voltar="2">Voltar</button></div>
 </div>
 <div class="compra-etapa" id="etapa-4" hidden>
@@ -226,6 +226,14 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
   out.append(entrega);
 
   out.append(criar('p','resumo-alerta','Prévia para conferência. Nenhum pagamento será iniciado. O frete será consultado novamente antes do registro de teste.'));
+  if(metodo==='cartao'){
+   const caixaCartao=criar('div','resumo-informacao');
+   caixaCartao.append(criar('strong','','Como funcionará o cartão pelo Mercado Pago'));
+   caixaCartao.append(criar('p','','Você será direcionado ao ambiente seguro do Mercado Pago (Checkout Pro) para escolher o cartão e, quando disponível, as condições de parcelamento.'));
+   caixaCartao.append(criar('p','','O pagamento só será considerado aprovado após a verificação do status enviado pelo Mercado Pago. Voltar para esta página, sozinho, não significa pagamento aprovado.'));
+   caixaCartao.append(criar('p','resumo-alerta','DEMONSTRAÇÃO: o botão de pagar não foi ativado. Nenhuma cobrança, registro de cartão ou pedido real será criado.'));
+   out.append(caixaCartao);
+  }
   if(metodo==='pix'){
    const teste=criar('button','', 'Registrar pedido de TESTE — sem Pix');
    teste.type='button';
