@@ -41,10 +41,11 @@ export default async function handler(req,res){
  // Webhook somente nesta branch Preview. Nunca se confia no corpo da notificação.
  if(req.method==='POST'&&req.query?.['mp-webhook']==='1'){
   if(!process.env.MP_TEST_WEBHOOK_SECRET)return res.status(503).json({error:'Webhook de teste não configurado.'});
-  if(!validarWebhookTeste(req.headers,req.query))return res.status(401).json({error:'Assinatura inválida.'});
+  if(!validarWebhookTeste(req.headers,req.query,req.body))return res.status(401).json({error:'Assinatura inválida ou identificador não recebido.'});
   if(req.body?.type!=='payment')return res.status(200).json({recebido:true,ignorado:true});
   try{
-   const pagamento=await consultarPagamentoTeste(String(req.query['data.id']));
+   const pagamentoId=String(req.query?.['data.id']??req.body?.data?.id??'');
+   const pagamento=await consultarPagamentoTeste(pagamentoId);
    const resultado=await registrarPagamentoCartaoTeste(pagamento);
    if(!resultado.found)return res.status(200).json({recebido:true,pedido_localizado:false});
    return res.status(200).json({recebido:true,ambiente:'preview',status:resultado.order.pagamento.situacao,producao_liberada:false});
