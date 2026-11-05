@@ -234,8 +234,8 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
    caixaCartao.append(criar('p','resumo-alerta','DEMONSTRAÇÃO: o botão de pagar não foi ativado. Nenhuma cobrança, registro de cartão ou pedido real será criado.'));
    out.append(caixaCartao);
   }
-  if(metodo==='pix'){
-   const teste=criar('button','', 'Registrar pedido de TESTE — sem Pix');
+  if(metodo==='pix'||metodo==='cartao'){
+   const teste=criar('button','', metodo==='pix'?'Registrar pedido de TESTE — sem Pix':'Registrar pedido e testar cartão no Mercado Pago');
    teste.type='button';
    const resposta=criar('p','compra-sub');
    out.append(teste,resposta);
@@ -256,12 +256,13 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
      const data=await response.json();
      if(versao!==resumoVersao)return;
      if(!response.ok)throw Error(data.error||'Falha ao registrar o pedido de teste.');
-     resposta.textContent='Pedido '+data.numero+' registrado em ambiente de TESTE. Total conferido: '+moeda(data.total_centavos/100)+'. Nenhum Pix gerado, nenhuma cobrança feita e produção não autorizada.';
+     resposta.textContent='Pedido '+data.numero+' registrado em ambiente de TESTE. Total conferido: '+moeda(data.total_centavos/100)+'. Produção não autorizada.';
      const caixa=document.getElementById('confirmacao-pedido');
      caixa.replaceChildren();
      caixa.append(criar('h3','','Número do pedido: '+data.numero));
      caixa.append(criar('p','','Total conferido: '+moeda(data.total_centavos/100)));
-     caixa.append(criar('p','','Situação: pedido de teste recebido. Pix ainda não iniciado.'));
+     caixa.append(criar('p','',metodo==='cartao'?'Situação: pedido de cartão registrado em teste; pagamento não confirmado.':'Situação: pedido de teste recebido. Pix ainda não iniciado.'));
+     if(metodo==='pix'){
      const avisoPix=criar('div','resumo-informacao');
      avisoPix.append(criar('strong','','Como será o pagamento Pix na loja'));
      avisoPix.append(criar('p','','Banco Inter PJ · chave Pix do tipo CNPJ.'));
@@ -269,6 +270,7 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
      avisoPix.append(criar('p','','A produção só será autorizada após a conferência do crédito no extrato do Inter.'));
      avisoPix.append(criar('p','resumo-alerta','AMBIENTE DE TESTE: chave Pix real não exibida. Não faça transferências referentes a este pedido fictício.'));
      caixa.append(avisoPix);
+     }
      const copiarNumero=criar('button','','Copiar número do pedido');
      copiarNumero.type='button';
      copiarNumero.addEventListener('click',async()=>{
@@ -276,6 +278,21 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
       catch{copiarNumero.textContent='Número: '+data.numero;}
      });
      caixa.append(copiarNumero);
+     if(metodo==='cartao'){
+      const sandbox=criar('div','resumo-informacao');
+      sandbox.append(criar('strong','','Pagamento por cartão — ambiente de teste'));
+      sandbox.append(criar('p','','Este checkout aceita somente testes do Mercado Pago. Use conta e cartão de teste; nunca informe dados de um cartão real.'));
+      if(data.checkout_sandbox){
+       const link=criar('a','','Abrir checkout de testes do Mercado Pago');
+       link.href=data.checkout_sandbox;link.target='_blank';link.rel='noopener noreferrer';
+       link.style.cssText='display:inline-block;background:#38683e;color:white;padding:12px 15px;border-radius:8px;margin-top:10px;text-decoration:none';
+       sandbox.append(link);
+       sandbox.append(criar('p','resumo-alerta','A abertura do checkout não confirma o pagamento. O sistema ainda não recebe nem valida automaticamente os resultados de cartão.'));
+      }else{
+       sandbox.append(criar('p','resumo-erro',data.erro_checkout||'Não foi possível criar a sessão sandbox do Mercado Pago.'));
+      }
+      caixa.append(sandbox);
+     }
      mudarEtapa(4);
      teste.textContent='Pedido de teste registrado';
     }catch(e){if(versao!==resumoVersao)return;resposta.textContent=e.message;teste.disabled=false;}
