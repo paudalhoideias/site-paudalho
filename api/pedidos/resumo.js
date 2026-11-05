@@ -1,7 +1,7 @@
 // Validacao de resumo da Torre 3 em 1. Nunca cria ou armazena pedidos.
 const cores = new Set(['azul','amarelo','preto','branco','rosa','vermelho']);
 const fitas = new Set(['sem','azul','amarelo','preto','branco','verde','rosa']);
-export default function handler(req,res) {
+export default async function handler(req,res) {
  res.setHeader('Cache-Control','no-store');
  res.setHeader('X-Robots-Tag','noindex,nofollow');
  if(process.env.VERCEL_ENV!=='preview'||process.env.VERCEL_GIT_COMMIT_REF!=='revisao-home-etapa-1-2026-10') return res.status(404).end();
