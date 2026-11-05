@@ -135,22 +135,11 @@ function limparEndereco(){
  invalidarResumo();
 }
 async function consultarCEP(cep){
- const fontes=[
-  {url:'https://viacep.com.br/ws/'+cep+'/json/',normalizar:d=>({rua:d.logradouro,bairro:d.bairro,cidade:d.localidade,uf:d.uf,naoEncontrado:Boolean(d.erro)})},
-  {url:'https://brasilapi.com.br/api/cep/v1/'+cep,normalizar:d=>({rua:d.street,bairro:d.neighborhood,cidade:d.city,uf:d.state,naoEncontrado:false})}
- ];
- let ultimoErro;
- for(const fonte of fontes){
-  try{
-   const resposta=await fetch(fonte.url,{headers:{Accept:'application/json'},signal:AbortSignal.timeout(6500),cache:'no-store'});
-   if(!resposta.ok)throw Error('HTTP '+resposta.status);
-   const dados=fonte.normalizar(await resposta.json());
-   if(dados.naoEncontrado)throw Error('CEP não localizado');
-   if(typeof dados.cidade!=='string'||!dados.cidade.trim()||typeof dados.uf!=='string'||!/^[A-Z]{2}$/.test(dados.uf))throw Error('Endereço incompleto');
-   return dados;
-  }catch(e){ultimoErro=e;}
- }
- throw ultimoErro||Error('Consulta indisponível');
+ // Consulta pelo próprio servidor: evita bloqueios CORS e limita provedores no navegador.
+ const resposta=await fetch('/api/pedidos/resumo?tipo=cep&cep='+encodeURIComponent(cep),{headers:{Accept:'application/json'},cache:'no-store',signal:AbortSignal.timeout(12000)});
+ const dados=await resposta.json();
+ if(!resposta.ok)throw Error(dados.error||'Consulta indisponível.');
+ return dados;
 }
 async function buscarEndereco(){
  const cep=campoCEP.value.replace(/\\D/g,'');
@@ -185,13 +174,6 @@ campoCEP.addEventListener('input',()=>{
  if(cep.length===8)buscarEndereco();
 });
 campoCEP.addEventListener('blur',buscarEndereco);
-// Permite nova tentativa sem exigir que o comprador apague e redigite o CEP.
-const botaoReconsulta=document.createElement('button');
-botaoReconsulta.type='button';botaoReconsulta.textContent='Buscar endereço novamente';
-botaoReconsulta.style.cssText='background:#e9efe6;color:#244c2b;font-size:13px;margin-top:6px;padding:8px 12px';
-botaoReconsulta.addEventListener('click',()=>{cepConsultado='';buscarEndereco();});
-avisoCEP.insertAdjacentElement('afterend',botaoReconsulta);
-
 document.getElementById('cotar').addEventListener('click',async()=>{const versao=++cotacaoVersao;const cep=document.getElementById('cep').value.replace(/\D/g,'');lista.replaceChildren();frete.textContent='—';freteEscolhido=null;servicoEscolhido=null;atualizarResumo();invalidarResumo();if(!/^[0-9]{8}$/.test(cep)){estado.textContent='Informe um CEP válido com 8 números.';return}estado.textContent='Consultando frete no Melhor Envio...';try{const r=await fetch('/api/melhor-envio/cotacao',{method:'POST',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({destination_cep:cep})});const data=await r.json();if(versao!==cotacaoVersao)return;if(!r.ok)throw Error(data.error||'Cotação indisponível');if(!data.servicos?.length){estado.textContent='Nenhuma opção disponível para esse destino.';return}estado.textContent='Selecione uma cotação real. Nenhuma contratação ou pagamento será realizado.';data.servicos.forEach((servico,i)=>{const valor=Number(servico.preco);if(!Number.isFinite(valor)||valor<0)return;const linha=document.createElement('div');linha.className='compra-opcao';const label=document.createElement('label');const radio=document.createElement('input');radio.type='radio';radio.name='frete';radio.value=String(valor);radio.addEventListener('change',()=>{freteEscolhido=valor;servicoEscolhido={nome:String(servico.nome||''),transportadora:String(servico.transportadora||''),prazo:Number(servico.prazo_dias)};frete.textContent=moeda(valor);atualizarResumo();invalidarResumo()});const texto=document.createElement('span');texto.textContent=[servico.transportadora,servico.nome,servico.prazo_dias+' dias (transporte)'].join(' · ');label.append(radio,texto);const preco=document.createElement('strong');preco.textContent=valor.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});linha.append(label,preco);lista.append(linha)})}catch(e){if(versao!==cotacaoVersao)return;estado.textContent=e.message==='Failed to fetch'?'Falha de conexão. Tente novamente.':e.message}});
 const criar=(tag,classe,conteudo)=>{const e=document.createElement(tag);if(classe)e.className=classe;if(conteudo!==undefined)e.textContent=conteudo;return e};
 const linhaResumo=(parent,esquerda,direita,classe='resumo-linha')=>{const row=criar('div',classe);row.append(criar('span','',esquerda),criar('strong','',direita));parent.append(row)};
