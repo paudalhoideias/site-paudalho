@@ -142,14 +142,14 @@ async function consultarCEP(cep){
  return dados;
 }
 async function buscarEndereco(){
- const cep=campoCEP.value.replace(/\\D/g,'');
- if(!/^\\d{8}$/.test(cep)||cep===cepConsultado)return;
+ const cep=campoCEP.value.replace(/\D/g,'');
+ if(!/^\d{8}$/.test(cep)||cep===cepConsultado)return;
  const versao=++cepBuscaVersao;
  cepConsultado=cep;
  avisoCEP.textContent='Buscando endereço pelo CEP...';
  try{
   const dados=await consultarCEP(cep);
-  if(versao!==cepBuscaVersao||cep!==campoCEP.value.replace(/\\D/g,''))return;
+  if(versao!==cepBuscaVersao||cep!==campoCEP.value.replace(/\D/g,''))return;
   document.getElementById('rua').value=typeof dados.rua==='string'?dados.rua:'';
   document.getElementById('bairro').value=typeof dados.bairro==='string'?dados.bairro:'';
   document.getElementById('cidade').value=dados.cidade;
