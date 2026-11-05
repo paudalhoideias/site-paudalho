@@ -246,7 +246,7 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
     resposta.textContent='Conferindo novamente o frete e registrando pedido de teste...';
     try{
      const cadastro={
-      idempotencia,metodo:'pix',
+      idempotencia,metodo,
       comprador:{nome,email,telefone},
       entrega:{rua,numero,complemento,bairro,cidade,uf,cep},
       configuracao:{fita:fita.value,revestimento:revestimento.value,lousa:lousa.value},
@@ -256,6 +256,7 @@ document.getElementById('simular-pedido').addEventListener('click',async()=>{
      const data=await response.json();
      if(versao!==resumoVersao)return;
      if(!response.ok)throw Error(data.error||'Falha ao registrar o pedido de teste.');
+     if(metodo==='cartao'&&!Object.prototype.hasOwnProperty.call(data,'checkout_sandbox'))throw Error('O servidor não retornou uma resposta de cartão válida. Confira o pedido no painel antes de tentar novamente.');
      resposta.textContent='Pedido '+data.numero+' registrado em ambiente de TESTE. Total conferido: '+moeda(data.total_centavos/100)+'. Produção não autorizada.';
      const caixa=document.getElementById('confirmacao-pedido');
      caixa.replaceChildren();
