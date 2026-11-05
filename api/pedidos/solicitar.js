@@ -42,7 +42,7 @@ export default async function handler(req,res){
  if(req.method==='POST'&&req.query?.['mp-webhook']==='1'){
   if(!process.env.MP_TEST_WEBHOOK_SECRET)return res.status(503).json({error:'Webhook de teste não configurado.'});
   if(!validarWebhookTeste(req.headers,req.query))return res.status(401).json({error:'Assinatura inválida.'});
-  if(req.body?.type!=='payment'||req.body?.live_mode!==false)return res.status(200).json({recebido:true,ignorado:true});
+  if(req.body?.type!=='payment')return res.status(200).json({recebido:true,ignorado:true});
   try{
    const pagamento=await consultarPagamentoTeste(String(req.query['data.id']));
    const resultado=await registrarPagamentoCartaoTeste(pagamento);
